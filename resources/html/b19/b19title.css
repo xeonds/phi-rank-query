@@ -1,0 +1,140 @@
+@import "../common/snow.css";
+
+.title .l,
+.title .r {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+}
+
+.title {
+    width: 100%;
+    margin-top: 100px;
+    height: 350px;
+    display: flex;
+    z-index: 1;
+    flex-direction: column;
+    margin-bottom: 100px;
+    align-items: center;
+    justify-content: flex-start;
+    writing-mode: vertical-lr;
+}
+
+.title img {
+    height: 246px;
+    margin-left: 3%;
+    margin-right: 3%;
+    border-radius: 58px;
+}
+
+.title .l {
+    width: 56%;
+    height: 100%;
+    z-index: 1;
+    writing-mode: horizontal-tb;
+    clip-path: polygon(100% 0%, 90% 100%, 0% 100%, 0px 0px);
+    display: flex;
+    flex-direction: row;
+    margin-right: -31%;
+    align-items: center;
+}
+
+.title .l .doc p {
+    font-size: 70px;
+    margin: 10px;
+}
+
+.title .m {
+    background-color: white;
+    clip-path: polygon(100% 0%, 5% 100%, 0% 100%, 95% 0px);
+    height: 100%;
+    width: 6.2%;
+    z-index: 2;
+    margin: 0;
+}
+
+.title .r {
+    clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 11% 0px);
+    height: 90%;
+    width: 43.3%;
+    display: flex;
+    flex-direction: column;
+    writing-mode: horizontal-tb;
+    justify-content: center;
+    margin-left: -29.4%;
+    padding-left: 33%;
+}
+
+.title .r p {
+    font-size: 40;
+    /* margin-left: 15%; */
+}
+
+.title .r .Challenge {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+}
+
+.title .r .Challenge-r,
+.title .r .Challenge-r_1 {
+    width: 95px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 2%;
+    margin-left: 3%;
+}
+
+.title .r .Challenge-r img,
+.title .r .Challenge-r_1 img {
+    width: 100%;
+    height: auto;
+    margin-right: 0;
+    margin-left: 0;
+    border-radius: 0px;
+    margin-bottom: -60px;
+}
+
+.title .r .Challenge-r p,
+.title .r .Challenge-r_1 p {
+    margin: 0;
+}
+
+.title .r .Challenge-r {
+    width: 95px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 2%;
+    margin-left: 3%;
+}
+
+.title .r .Challenge-r img {
+    width: 100%;
+    height: auto;
+    margin-right: 0;
+    margin-left: 0;
+    border-radius: 0px;
+    margin-bottom: -60px;
+}
+
+.title .r .Challenge-r p {
+    margin: 0;
+}
+
+
+
+.CLG p {
+    margin-left: 0;
+}
+
+.CLG {
+    margin-left: 0;
+    width: auto;
+    display: flex;
+    margin-left: 10px;
+    margin-right: -20px;
+}

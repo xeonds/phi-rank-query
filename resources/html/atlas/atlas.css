@@ -1,0 +1,307 @@
+@import "../common/common.css";
+@import "../common/snow.css";
+
+body {
+    height: 1080px;
+    width: 2048px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.background {
+    height: 1080px;
+    width: 2048px;
+}
+
+.big-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+}
+
+.box {
+    display: flex;
+    width: 1736px;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.box p {
+    margin: 0;
+    flex-direction: column;
+}
+
+.info-box {
+    width: 1013px;
+    height: auto;
+    margin-right: -342px;
+    z-index: 1;
+}
+
+.name-box {
+    display: flex;
+    height: 144px;
+    width: 833px;
+    background-color: rgba(0, 0, 0, 0.75);
+    margin-left: 185px;
+    clip-path: polygon(36px 0px, 100% 0%, 100% 100%, 0% 100%, 36px 0px);
+    flex-direction: column;
+    z-index: 1;
+    backdrop-filter: blur(3px);
+}
+
+.name-box .song {
+    height: 72px;
+    width: 535px;
+    margin-left: 51px;
+    margin-top: 13px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.name-box .song p {
+    color: rgb(255, 255, 255, 0.93);
+    font-size: 48px;
+}
+
+.name-box .composer {
+    height: 50px;
+    width: 542px;
+    margin-left: 49px;
+}
+
+.name-box .composer p {
+    color: rgb(255, 255, 255, 0.83);
+    font-size: 25px;
+}
+
+.charts-box {
+    height: 359px;
+    width: 760;
+    background-color: rgba(0, 183, 240, 0.3);
+    border-left: 12px solid;
+    border-color: rgb(0, 183, 240);
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(3px);
+    z-index: 1;
+}
+
+.charts-box p {
+    font-size: 14px;
+}
+
+.charts-box .length {
+    margin-left: 20px;
+    height: 64px;
+    width: 100px;
+}
+
+.charts-box .length p {
+    color: white;
+    font-size: 30px;
+    margin-top: 10px;
+}
+
+.charts-box .txt {
+    height: 32px;
+    display: flex;
+    margin-left: 20px;
+    align-items: flex-end;
+}
+
+.charts-box .txt .sqrt {
+    height: 32px;
+    width: 154px;
+    display: flex;
+    background-color: rgba(209, 209, 209, 0.75);
+    justify-content: center;
+    align-items: center;
+}
+
+.charts-box .txt .sqrt p {
+    color: #000;
+    font-size: 20px;
+}
+
+.charts-box .txt .line {
+    height: 80px;
+    width: 567px;
+    display: flex;
+    border-bottom: 2px solid;
+    border-color: rgba(209, 209, 209, 0.75);
+    align-items: flex-end;
+    font-size: 200;
+}
+
+.charts-box .txt .line p {
+    color: #FFFFFF;
+    font-size: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    width: 95%;
+}
+
+.charts-box .common {
+    margin-left: 20px;
+    width: 590px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.charts-box .common p {
+    color: white;
+}
+
+.chart-info-box {
+    width: 87%;
+    height: 73%;
+    display: flex;
+}
+
+.chart-info {
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.chart {
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+.up {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.chart p {
+    color: white;
+    width: fit-content;
+}
+
+.ill-box {
+    display: flex;
+    width: 1063px;
+    height: 560px;
+    filter: drop-shadow(0px 0px 30px #000);
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.ill-box img {
+    width: 100%;
+    clip-path: polygon(139px 0px, 1063px 0px, 924px 560px, 0px 560px, 139px 0px);
+    z-index: 2;
+}
+
+.leave {
+    margin-top: 40px;
+    width: 2040;
+    display: flex;
+}
+
+.leave-box {
+    z-index: 4;
+    display: flex;
+    filter: drop-shadow(0px 0px 30px #000);
+    margin-left: 795px;
+}
+
+.leave-box p {
+    color: white;
+    font-size: 35px;
+    margin: 0;
+}
+
+
+.leave-ez,
+.leave-hd,
+.leave-in,
+.leave-at,
+.leave-sp {
+    display: flex;
+    width: 100px;
+    height: 75px;
+    clip-path: polygon(17% 0px, 100% 0px, 83% 100%, 0px 100%, 17% 0px);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+.leave-ez {
+    background-color: #92D050;
+}
+
+.leave-hd {
+    background-color: #00B0F0;
+}
+
+.leave-in {
+    background-color: #FF0000;
+}
+
+.leave-at {
+    background-color: #A6A6A6;
+}
+
+.leave-sp {
+    background-color: #000000;
+}
+
+.createdbox {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-top: -50px;
+    writing-mode: horizontal-tb;
+    justify-content: center;
+}
+
+.createdbox p {
+    color: white;
+    font-size: 70px;
+    font-family: 'Aldrich', 'PHI';
+    margin: 0;
+}
+
+.phi-plugin {
+    display: flex;
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.ver {
+    display: flex;
+    z-index: 1;
+}
+
+.phi-plugin p {
+    font-size: 80px;
+    text-shadow: 0 0 20px rgb(0 186 255);
+}
+
+.ver p {
+    font-size: 40px;
+    text-shadow: 0 0 20px #fff700;
+}

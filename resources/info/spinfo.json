@@ -1,0 +1,217 @@
+{
+    "今年も「雪降り、メリクリ」目指して顽张ります！！": {
+        "song": "今年も「雪降り、メリクリ」目指して顽张ります！！",
+        "uisong": "今年も「雪降り、メリクリ」目指して頑張ります！！",
+        "illustration": "https://img.moegirl.org.cn/common/thumb/3/33/%E4%BB%8A%E5%B9%B4%E3%82%82%E3%80%8C%E9%9B%AA%E9%99%8D%E3%82%8A%E3%80%81%E3%83%A1%E3%83%AA%E3%82%AF%E3%83%AA%E3%80%8D%E7%9B%AE%E6%8C%87%E3%81%97%E3%81%A6%E9%A0%91%E5%BC%B5%E3%82%8A%E3%81%BE%E3%81%99%EF%BC%81%EF%BC%81.jpg/300px-%E4%BB%8A%E5%B9%B4%E3%82%82%E3%80%8C%E9%9B%AA%E9%99%8D%E3%82%8A%E3%80%81%E3%83%A1%E3%83%AA%E3%82%AF%E3%83%AA%E3%80%8D%E7%9B%AE%E6%8C%87%E3%81%97%E3%81%A6%E9%A0%91%E5%BC%B5%E3%82%8A%E3%81%BE%E3%81%99%EF%BC%81%EF%BC%81.jpg",
+        "illustration_big": "https://img.moegirl.org.cn/common/3/33/%E4%BB%8A%E5%B9%B4%E3%82%82%E3%80%8C%E9%9B%AA%E9%99%8D%E3%82%8A%E3%80%81%E3%83%A1%E3%83%AA%E3%82%AF%E3%83%AA%E3%80%8D%E7%9B%AE%E6%8C%87%E3%81%97%E3%81%A6%E9%A0%91%E5%BC%B5%E3%82%8A%E3%81%BE%E3%81%99%EF%BC%81%EF%BC%81.jpg",
+        "chapter": "SP",
+        "bpm": "156~234",
+        "composer": "AiSS vs. 华牧狸 w/ 夜轮 ft.結月ゆかり",
+        "length": "3:45",
+        "illustrator": "Vios.NoFurry.git",
+        "spinfo": "本曲目已于 v2.5.1 版本后移除\n愚人节在 雪降り、メリクリ 谱面中难度会变为 26℃\n点击难度后出现空调控制器，切换制冷模式后调整为0℃进入SP谱面\n（在制热模式下调整为40℃将强制退出谱面）",
+        "chart": {
+            "IN": {
+                "level": "?",
+                "difficulty": "|2",
+                "combo": "2500",
+                "charter": "今年も「NerSANTA」「BarbarianerSLEDGE」と遊ぼう！！\\\\リンコ*198食べ放題//"
+            },
+            "lN": {
+                "rgba": "0,0,0,1",
+                "level": "?",
+                "difficulty": "0℃",
+                "combo": "2500",
+                "charter": "今年も「NerSANTA」「BarbarianerSLEDGE」と遊ぼう！！\\\\リンコ*198食べ放題//"
+            }
+        }
+    },
+    "Christmas": {
+        "song": "Christmas",
+        "illustration": "https://static.wikia.nocookie.net/phigros/images/0/00/Christmas_jacket.png/revision/latest/scale-to-width-down/1000?cb=20200317102705",
+        "illustration_big": "https://static.wikia.nocookie.net/phigros/images/0/00/Christmas_jacket.png/revision/latest/scale-to-width-down/1000?cb=20200317102705",
+        "chapter": "SP",
+        "bpm": "125",
+        "composer": "姜米條",
+        "length": "1:05",
+        "illustrator": "knife美工刀",
+        "spinfo": "本曲目已于 v1.2.4 版本后移除\n愚人节在 Burn 选曲界面点击烟进入",
+        "chart": {
+            "圣诞快乐": {
+                "rgba": "244,179,169,1",
+                "level": "?",
+                "difficulty": "0℃",
+                "combo": "177",
+                "charter": "Catcats"
+            }
+        }
+    },
+    "Spasmodic(Haocore Mix)": {
+        "song": "Spasmodic(Haocore Mix)",
+        "illustration": "Spasmodic(Haocore Mix).png",
+        "illustration_big": "Spasmodic(Haocore Mix).png",
+        "chapter": "SP",
+        "bpm": "200",
+        "composer": "Daily天利",
+        "length": "2:24",
+        "illustrator": "笔记RE",
+        "spinfo": "本曲目已于 v1.6.6 版本后移除\n愚人节在 光 选曲界面点击中央光亮处进入",
+        "chart": {
+            "一库呦": {
+                "rgba": "244,110,113,1",
+                "level": "?",
+                "difficulty": "❤",
+                "combo": "2500",
+                "charter": "Phigros Spasming Team “無極病院”"
+            }
+        }
+    },
+    "Burn(Haocore Mix)": {
+        "song": "Burn(Haocore Mix)",
+        "illustration": "https://img.moegirl.org.cn/common/thumb/c/c2/Burn_Phigros.png/300px-Burn_Phigros.png",
+        "illustration_big": "https://img.moegirl.org.cn/common/c/c2/Burn_Phigros.png",
+        "chapter": "SP",
+        "bpm": "200",
+        "composer": "Daily天利",
+        "length": "2:24",
+        "illustrator": "knife美工刀",
+        "spinfo": "本曲目已于 v1.4.1 版本后移除\n愚人节在 Burn 选曲界面点击禁烟标志进入",
+        "chart": {
+            "禁烟先锋": {
+                "rgba": "155,38,30,1",
+                "level": "?",
+                "difficulty": "🚫",
+                "combo": "1515",
+                "charter": "Catcats"
+            }
+        }
+    },
+    "Winter♂cube": {
+        "song": "Winter♂cube",
+        "illustration": "https://img.moegirl.org.cn/common/thumb/7/7c/Winter_Cube_Phigros.png/300px-Winter_Cube_Phigros.png",
+        "illustration_big": "https://img.moegirl.org.cn/common/7/7c/Winter_Cube_Phigros.png",
+        "chapter": "SP",
+        "bpm": "208",
+        "composer": "Ctymax feat. NceS",
+        "length": "2:40",
+        "illustrator": "翠冷兮",
+        "spinfo": "本谱面已于 v1.3.0 版本后移除\n在 Winter ↑cube↓ 选曲界面点击左上角的星星进入",
+        "chart": {
+            "♂": {
+                "rgba": "203,199,214,1",
+                "level": "?",
+                "difficulty": "♂",
+                "combo": "924",
+                "charter": "小鹏"
+            }
+        }
+    },
+    "Sigma(Haocore Mix)～105秒の伝説～": {
+        "song": "Sigma(Haocore Mix)～105秒の伝説～",
+        "illustration": "SigmaHaocoreMix105秒の伝説.png",
+        "illustration_big": "SigmaHaocoreMix105秒の伝説.png",
+        "chapter": "SP",
+        "bpm": "200",
+        "composer": "Daily天利",
+        "length": "1:45",
+        "illustrator": "~天利利利利利利~",
+        "spinfo": "本曲目已于 v2.1.4 版本后移除\n愚人节在 SIGMA 选曲界面长按难度进入\n可通过本曲目解锁 Sigma(Haocore Mix)～Regrets of The Yellow Tulip～",
+        "chart": {
+            "嘿！": {
+                "rgba": "3,166,55,1",
+                "level": "?",
+                "difficulty": "嘿！",
+                "combo": "1152",
+                "charter": "Barbari...太长了后面不写了"
+            }
+        }
+    },
+    "Sigma(Haocore Mix)～Regrets of The Yellow Tulip～": {
+        "song": "Sigma(Haocore Mix)～Regrets of The Yellow Tulip～",
+        "illustration": "SigmaHaocoreMixRegretsofTheYellowTulip.png",
+        "illustration_big": "SigmaHaocoreMixRegretsofTheYellowTulip.png",
+        "chapter": "SP",
+        "bpm": "200",
+        "composer": "Daily天利",
+        "length": "2:37",
+        "illustrator": "Viosgit",
+        "spinfo": "本曲目已于 v2.1.4 版本后移除\n愚人节在 Sigma(Haocore Mix)～105秒の伝説～ 曲目中达到[600000-699999]分后解锁\n游玩后可通过连续点击难度快速进入",
+        "chart": {
+            "踏平星空": {
+                "rgba": "216,195,156,1",
+                "level": "?",
+                "difficulty": "exe",
+                "combo": "4000",
+                "charter": "Σ as Nαrcατυs"
+            }
+        }
+    },
+    "Anomaly": {
+        "song": "Anomaly",
+        "illustration": "https://static.wikia.nocookie.net/phigros/images/a/a3/Anomaly_jacket.png/revision/latest/scale-to-width-down/1000?cb=20210305094754",
+        "illustration_big": "https://static.wikia.nocookie.net/phigros/images/a/a3/Anomaly_jacket.png/revision/latest/scale-to-width-down/1000?cb=20210305094754",
+        "chapter": "Chapter EX-姜米條 精选集",
+        "bpm": "200",
+        "composer": "姜米條 & RocketLant",
+        "length": "2:27",
+        "illustrator": "姜米條",
+        "spinfo": "本曲目已于 v1.6.4 版本后移除",
+        "chart": {
+            "EZ": {
+                "level": "7",
+                "difficulty": "7.5",
+                "combo": "873",
+                "charter": "NerSAN"
+            },
+            "HD": {
+                "level": "7",
+                "difficulty": "7.9",
+                "combo": "269",
+                "charter": "NerSAN"
+            },
+            "IN": {
+                "level": "14",
+                "difficulty": "14.6",
+                "combo": "1212",
+                "charter": "NerSAN"
+            }
+        }
+    },
+    "Destination": {
+        "song": "Destination",
+        "illustration": "https://static.wikia.nocookie.net/phigros/images/9/9b/Destination_jacket.png/revision/latest/scale-to-width-down/1000?cb=20210305094835",
+        "illustration_big": "https://static.wikia.nocookie.net/phigros/images/9/9b/Destination_jacket.png/revision/latest/scale-to-width-down/1000?cb=20210305094835",
+        "chapter": "Chapter EX-姜米條 精选集",
+        "bpm": "200",
+        "composer": "姜米條 & RocketLant",
+        "length": "2:49",
+        "illustrator": "Rallxkurara",
+        "spinfo": "本曲目已于 v1.6.4 版本后移除",
+        "chart": {
+            "EZ": {
+                "level": "3",
+                "difficulty": "3.6",
+                "combo": "253",
+                "charter": "阿爽"
+            },
+            "HD": {
+                "level": "9",
+                "difficulty": "9.4",
+                "combo": "491",
+                "charter": "阿爽"
+            },
+            "IN": {
+                "level": "13",
+                "difficulty": "13.6",
+                "combo": "545",
+                "charter": "阿爽 vs JKy"
+            },
+            "AT": {
+                "level": "15",
+                "difficulty": "15.4",
+                "combo": "965",
+                "charter": "Journey's End"
+            }
+        }
+    }
+}
