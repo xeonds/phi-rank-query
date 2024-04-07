@@ -19,7 +19,7 @@ func NewByteReader(data []byte) *ByteReader {
 }
 
 func (br *ByteReader) Remaining() int {
-	return len(br.data) - br.position - 1
+	return len(br.data) - br.position
 }
 
 func (br *ByteReader) GetByte() byte {

@@ -154,7 +154,7 @@ func CheckPasswordHash(password, hash string) error {
 }
 
 // LoadCSV loads data from a CSV file and returns a slice of maps representing the rows.
-func LoadCSV(filePath string) ([]map[string]string, error) {
+func LoadCSV(filePath string) (map[string]map[string]string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -168,14 +168,15 @@ func LoadCSV(filePath string) ([]map[string]string, error) {
 	}
 
 	headers := rows[0]
-	data := make([]map[string]string, 0, len(rows)-1)
-	for _, row := range rows[1:] {
-		entry := make(map[string]string)
-		for i, value := range row {
-			entry[headers[i]] = value
+	data := make(map[string]map[string]string, len(rows)-1)
+	for i := 1; i < len(rows); i++ {
+		row := rows[i]
+		id := row[0]
+		values := make(map[string]string)
+		for j := 1; j < len(row); j++ {
+			values[headers[j]] = row[j]
 		}
-		data = append(data, entry)
+		data[id] = values
 	}
-
 	return data, nil
 }

@@ -12,7 +12,9 @@ import (
 	"math"
 	"net/http"
 	"sort"
+	"strconv"
 
+	"github.com/xeonds/phi-plug-go/config"
 	"github.com/xeonds/phi-plug-go/lib"
 )
 
@@ -185,6 +187,7 @@ func GetSaveZip(saveURL string) (*zip.Reader, error) {
 	return saveZip, nil
 }
 
+// 存档信息
 type Game struct {
 	GameProgress *GameProcess
 	GameUser     *GameUser
@@ -246,40 +249,64 @@ func DecryptSaveZip(savezip *zip.Reader) *Game {
 	}
 }
 
+// 单曲Rks信息
 type Record struct {
-	Rks  float64
-	Acc  float64
-	Song string
-}
-type Phi struct {
+	Id           string
 	Rks          float64
+	Score        uint32
+	Difficulty   string
+	Level        string
 	Acc          float64
+	Song         string
 	Illustration string
 }
 
-// 计算B19信息
-func CalcB19Info(data *Game) {
-	phi := Phi{}
-
-	var b19List []Record
+// 计算BN信息
+func CalcBNInfo(data *Game, config *config.Config, nnum int) ([]Record, float64, Record) {
+	phi := Record{}
+	difficulty, err := lib.LoadCSV(config.Data.Difficulty)
+	if err != nil {
+		log.Fatal("reading difficulty: ", err)
+	}
+	songInfo, err := lib.LoadCSV(config.Data.Info)
+	if err != nil {
+		log.Fatal("reading songInfo: ", err)
+	}
 	comRks := 0.0
-
 	phi.Rks = 0.0
-
 	var rksList []Record
-	for _, songs := range data.GameRecord.Record {
-		for level, tem := range songs {
+	for title, song := range data.GameRecord.Record {
+		titleTrim := title[:len(title)-2]
+		for level, tem := range song {
+			difficulty_map := []string{"EZ", "HD", "IN", "AT", "LEGACY"}
 			if level == 4 {
 				break
 			}
-			if tem.Rks >= 100 {
-				if tem.Rks > phi.Rks {
-					phi.Rks = tem.Rks
-					phi.Acc = tem.Acc
-					phi.Illustration = getIllustration(tem.Song)
+			if tem == nil {
+				continue
+			}
+			songRank := Record{
+				Id:           titleTrim,
+				Rks:          CalcSongRank(tem.Acc, difficulty[titleTrim][difficulty_map[level]]),
+				Score:        tem.Score,
+				Difficulty:   difficulty[titleTrim][difficulty_map[level]],
+				Level:        difficulty_map[level],
+				Acc:          float64(tem.Acc),
+				Song:         songInfo[titleTrim]["song"],
+				Illustration: getIllustration(titleTrim),
+			}
+			if tem.Acc >= 100 {
+				if songRank.Rks > phi.Rks {
+					phi.Rks = songRank.Rks
+					phi.Acc = songRank.Acc
+					phi.Score = songRank.Score
+					phi.Song = songRank.Song
+					phi.Illustration = songRank.Illustration
+					phi.Difficulty = songRank.Difficulty
+					phi.Level = songRank.Level
 				}
 			}
-			rksList = append(rksList, tem)
+			rksList = append(rksList, songRank)
 		}
 	}
 
@@ -300,41 +327,33 @@ func CalcB19Info(data *Game) {
 		return rksList[i].Rks > rksList[j].Rks
 	})
 
-	var illList []string
+	var b19List []Record
 	for i := 0; i < nnum && i < len(rksList); i++ {
 		if i < 19 {
 			comRks += rksList[i].Rks
 		}
-		rksList[i].Num = i + 1
-		rksList[i].Suggest = getComSuggest(rksList[i].Rks, rksList[i].Difficulty, minUpRks)
 		rksList[i].Rks = math.Floor(rksList[i].Rks*100) / 100
 		rksList[i].Acc = math.Floor(rksList[i].Acc*100) / 100
-		rksList[i].Illustration = getIllustration(rksList[i].Song, "low")
 		b19List = append(b19List, rksList[i])
-		illList = append(illList, getIllustration(rksList[i].Song, "blur"))
 	}
 
-	var phiSuggest string
-	if userRks < 14 {
-		phiSuggest = "已经到顶啦"
-	} else {
-		phiSuggest = "无法推分"
-	}
+	return b19List, comRks / float64(nnum+1), phi
 }
 
-func cmp(r1, r2 Record) bool {
-	// Implement comparison logic for r1 and r2
-	return false // Placeholder return value
+// 计算歌曲Rks
+func CalcSongRank(acc float32, rank string) float64 {
+	rankValue, _ := strconv.ParseFloat(rank, 64)
+	if acc == 100 {
+		return float64(rankValue)
+	} else if acc < 70 {
+		return 0
+	} else {
+		return rankValue * (((float64(acc) - 55) / 45) * ((float64(acc) - 55) / 45))
+	}
 }
 
 func getIllustration(song string) string {
-	// Implement getIllustration function
-	return "" // Placeholder return value
-}
-
-func getComSuggest(rks, difficulty, minUpRks float64) string {
-	// Implement getComSuggest function
-	return "" // Placeholder return value
+	return "/assets/illustrations/" + song + ".png"
 }
 
 // utils
@@ -421,7 +440,7 @@ func NewGameRecord(data []byte) *GameRecord {
 		Record:  make(map[string][]*LevelRecord),
 	}
 	gameRecord.Songsnum = int(gameRecord.Data.GetVarInt())
-	for gameRecord.Data.Remaining() > 0 {
+	for gameRecord.Data.Remaining() > 32 {
 		key := gameRecord.Data.GetString()
 		gameRecord.Data.SkipVarInt(0)
 		length := gameRecord.Data.GetByte()
