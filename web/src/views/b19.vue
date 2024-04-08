@@ -19,7 +19,7 @@
           </div>
         </div>
         <p v-if="data">Data: {{ data }}</p>
-        <p>Date: {{ Date }}</p>
+        <p>Date: {{ lastDate }}</p>
       </div>
     </div>
     <div class="b19">
@@ -190,7 +190,7 @@ const Rks = ref('');
 const ChallengeMode = ref('');
 const ChallengeModeRank = ref('');
 const data = ref('');
-const Date = ref('');
+const lastDate = ref('');
 const phi = ref({
   song: '',
   illustration: '',
@@ -203,14 +203,31 @@ const phi = ref({
   suggest: ''
 });
 const b19_list: Ref<Song[]> = ref([] as Song[]);
+const sessionToken = ref('');
 
 const askForSessionToken = () => {
-  var sessionToken = sessionStorage.getItem('selectedSession');
-  if (!sessionToken) {
-    alert('Please select a session');
+  var token = sessionStorage.getItem('selectedSession');
+  if (!token) {
+    alert('请选择Session');
     window.location.href = '/#/session';
   } else {
-    fetch('/api/v1/b19', {
+    sessionToken.value = token!;
+  }
+}
+const fetchData = async (sessionToken: string) => {
+  const cacheKey = 'history';
+  const cacheTimeout = 60000; // 1 minute in milliseconds
+
+  const currentTime = Date.now();
+  const cachedData = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+
+  if (cachedData && currentTime - cachedData.timestamp < cacheTimeout) {
+    const latestData = cachedData.data[cachedData.data.length - 1];
+    return { data: ref(latestData), err: ref(null) };
+  } else {
+    const data: Ref<any> = ref(null);
+    const err: Ref<any> = ref(null);
+    await fetch('/api/v1/b19', {
       method: 'POST',
       body: JSON.stringify({ session: sessionToken }),
       headers: {
@@ -218,12 +235,17 @@ const askForSessionToken = () => {
       }
     })
       .then(response => response.json())
-      .then(data => {
-        parseData(data);
+      .then(json => {
+        data.value = json;
+        const newData = {
+          timestamp: currentTime,
+          data: [...(cachedData?.data || []), json].slice(-32) // Max length of 32
+        };
+        localStorage.setItem(cacheKey, JSON.stringify(newData));
       })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+      .catch(error => err.value = error);
+
+    return { data, err };
   }
 }
 const getRating = (score: number) => {
@@ -250,7 +272,7 @@ const parseData = (data: any) => {
   PlayerId.value = data.player || '';
   ChallengeMode.value = getHiBit(data.challenge).toFixed(0).toString() || '';
   ChallengeModeRank.value = getSubBit(data.challenge).toString() || '';
-  Date.value = data.date || '';
+  lastDate.value = data.date || '';
   Rks.value = data.rks.toFixed(4).toString();
   phi.value.song = data.phi.Song || '';
   phi.value.illustration = data.phi.Illustration || '';
@@ -276,8 +298,14 @@ const parseData = (data: any) => {
   }));
 }
 
-onMounted(() => {
+onMounted(async () => {
   askForSessionToken();
+  const { data, err } = await fetchData(sessionToken.value)
+  if (err.value != null) {
+    alert('查询失败，请重试');
+    window.location.href = '/#/';
+  }
+  parseData(data.value);
 });
 </script>
 
