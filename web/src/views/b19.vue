@@ -1,5 +1,5 @@
 <template>
-  <div class="background">
+  <div>
     <div class="title">
       <div class="l">
         <img src="/assets/Phigros_Icon_3.0.0.png" alt="icon">
@@ -271,7 +271,7 @@ const parseData = (data: any) => {
     rks: item.Rks.toString() || '',
     Rating: getRating(item.Score) || '',
     score: item.Score.toString() || '',
-    acc: item.Acc.toString() || '',
+    acc: (item.Acc + .005).toFixed(2).toString() || '',
     suggest: ''
   }));
 }
@@ -282,27 +282,14 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
-body {
-  margin: 0;
-  background: url('/assets/Star1.png') center no-repeat;
-  background-size: 100% 100%;
-
-  p {
-    color: white;
-    margin: 0px;
-    margin-block: 0;
-    margin-inline: 0;
-  }
-}
-
 .title {
   width: 100%;
-  margin-top: 4rem;
+  padding-top: 2rem;
   height: 12rem;
   display: flex;
   z-index: 1;
   flex-direction: row;
-  margin-bottom: 100px;
+  padding-bottom: 2rem;
   align-items: center;
   justify-content: space-between;
 
@@ -380,6 +367,7 @@ body {
     display: flex;
     flex-flow: column;
     align-items: center;
+    padding-left: 2rem;
   }
 
   .R {
@@ -397,7 +385,7 @@ body {
 
 .song {
   width: auto;
-  height: 12rem;
+  height: 10.5rem;
   display: flex;
   flex-flow: row;
   align-items: center;
@@ -415,28 +403,28 @@ body {
 
     .num {
       p {
-        font-size: 1rem;
+        font-size: 0.8rem;
         margin: 0;
         color: black;
       }
 
       z-index: 2;
-      width: 2.4rem;
-      height: 1.8rem;
+      width: 1.8rem;
+      height: 1.2rem;
       display: flex;
       background-color: rgba(255, 255, 255, 1);
-      clip-path: polygon(100% 0, 80% 100%, 0 100%, 20% 0);
+      clip-path: polygon(100% 0, 90% 100%, 0 100%, 10% 0);
       justify-content: center;
       align-items: center;
     }
 
     .ill {
-      width: 12.8rem;
+      width: 10rem;
       height: auto;
       display: flex;
       flex-direction: column;
-      margin-top: -1.8rem;
-      margin-bottom: -3.2rem;
+      margin-top: -1.2rem;
+      margin-bottom: -2.5rem;
       clip-path: polygon(100% 0, 90% 100%, 0 100%, 10% 0);
       overflow: hidden;
     }
@@ -461,14 +449,14 @@ body {
     .rank-HD,
     .rank-IN,
     .rank-AT {
-      width: 4.8rem;
-      height: 3.2rem;
+      width: 4rem;
+      height: 2.5rem;
       display: flex;
       align-items: center;
       flex-flow: column;
       justify-content: center;
       margin-left: -15%;
-      clip-path: polygon(100% 0, 85% 100%, 0 100%, 15% 0);
+      clip-path: polygon(100% 0, 90% 100%, 0 100%, 10% 0);
 
       .org,
       .rel {
@@ -487,24 +475,24 @@ body {
       .rel {
         height: 49%;
         margin-right: 10%;
-        font-size: 1.2rem;
+        font-size: 1rem;
       }
     }
   }
 
   .info {
-    margin-left: -3rem;
-    padding-left: 3rem;
+    margin-left: -2rem;
+    padding-left: 2rem;
     padding-top: .2rem;
-    padding-bottom: .3rem;
+    padding-bottom: .2rem;
     display: flex;
     flex-flow: column;
     align-items: center;
     justify-content: center;
     width: 14rem;
-    height: 6rem;
+    height: 5rem;
     background-color: rgba(0, 0, 0, 0.5);
-    clip-path: polygon(100% 0, 90% 100%, 0 100%, 10% 0);
+    clip-path: polygon(100% 0, 95% 100%, 0 100%, 5% 0);
 
     .songname {
       width: 90%;
@@ -514,7 +502,7 @@ body {
       align-items: center;
 
       p {
-        font-size: 1rem;
+        font-size: .75rem;
         margin: 0;
         text-align: center;
       }
@@ -528,8 +516,8 @@ body {
       align-items: center;
 
       .Rating {
-        width: 3rem;
-        height: 3rem;
+        width: 2.5rem;
+        height: 2.5rem;
         display: flex;
 
         img {
@@ -546,7 +534,7 @@ body {
         justify-content: center;
 
         .score {
-          font-size: 1.6rem;
+          font-size: 1.4rem;
         }
 
         .line {
@@ -567,7 +555,7 @@ body {
             align-items: center;
 
             p {
-              font-size: 1.2rem;
+              font-size: .9rem;
             }
           }
 
