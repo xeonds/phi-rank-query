@@ -5,23 +5,20 @@ const routes = [
     path: "/",
     name: "home",
     children: [
-      { path: "/",
-        name: "home",
-        component: () => import("@/views/home.vue"), },
-      { path: "b19",
-        name: "b19",
-        component: () => import("@/views/b19.vue"), },
-      { path: "/session",
+      { path: "/", name: "home", component: () => import("@/views/home.vue") },
+      { path: "b19", name: "b19", component: () => import("@/views/b19.vue") },
+      {
+        path: "/session",
         name: "session",
-        component: () => import("@/views/session.vue"), },
-      { path: "/history",
+        component: () => import("@/views/session.vue"),
+      },
+      {
+        path: "/history",
         name: "history",
-        component: () => import("@/views/history.vue"), },
-      { path: "/about",
-        name: "about",
-        component: () => import("@/views/about.vue"), }
+        component: () => import("@/views/history.vue"),
+      },
     ],
-  }
+  },
 ];
 
 const router = createRouter({

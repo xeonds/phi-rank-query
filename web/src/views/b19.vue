@@ -5,7 +5,7 @@
         <img src="/assets/Phigros_Icon_3.0.0.png" alt="icon">
         <div class="doc">
           <p>Phigros</p>
-          <p>B19查询</p>
+          <p>RankingScore查询</p>
         </div>
       </div>
       <div class="r">
@@ -205,8 +205,11 @@ const phi = ref({
 const b19_list: Ref<Song[]> = ref([] as Song[]);
 
 const askForSessionToken = () => {
-  var sessionToken = prompt("Please enter your session token:");
-  if (sessionToken) {
+  var sessionToken = sessionStorage.getItem('selectedSession');
+  if (!sessionToken) {
+    alert('Please select a session');
+    window.location.href = '/#/session';
+  } else {
     fetch('/api/v1/b19', {
       method: 'POST',
       body: JSON.stringify({ session: sessionToken }),
