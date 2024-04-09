@@ -38,14 +38,14 @@ func GetB19(config *config.Config) func(c *gin.Context) {
 			c.JSON(400, gin.H{"msg": "session is empty"})
 			return
 		}
-		userInfoDump, err := service.GetB19Info(post.Session)
+		userInfoDump, err := service.GetB19Info(config, post.Session)
 		if err != nil {
 			c.JSON(400, gin.H{"msg": err.Error()})
 			return
 		}
 		userInfo := new(service.GameSave)
 		_ = json.Unmarshal(userInfoDump, userInfo)
-		saveZip, err := service.GetSaveZip(userInfo.Results[0].Gamefile.URL)
+		saveZip, err := service.GetSaveZip(config, post.Session, userInfo.Results[0].Gamefile.URL)
 		if err != nil {
 			c.JSON(400, gin.H{"msg": err.Error()})
 			return

@@ -13,9 +13,10 @@ import (
 )
 
 var session = os.Getenv("SESSION")
+var conf = lib.LoadConfig[config.Config]()
 
 func TestB19(t *testing.T) {
-	b19Data, err := service.GetB19Info(session)
+	b19Data, err := service.GetB19Info(conf, session)
 	if err != nil {
 		t.Fatalf("Failed to get B19 data: %v", err)
 	}
@@ -48,7 +49,7 @@ func TestGetZipAndDecrypt(t *testing.T) {
 		t.Fatalf("Failed to unmarshal JSON data: %v", err)
 	}
 	latestModified := data.Results[0]
-	savezip, err := service.GetSaveZip(latestModified.Gamefile.URL)
+	savezip, err := service.GetSaveZip(conf, session, latestModified.Gamefile.URL)
 	if err != nil {
 		t.Fatalf("Failed to get save zip: %v", err)
 	}

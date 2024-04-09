@@ -24,8 +24,13 @@ run:
 
 init:
 	(go mod tidy) &\
-	(cd web && pnpm i) &\
-	(cd script && ./unpack.sh $(APK_NAME))
+	(cd web && pnpm i)
+
+unpack:
+	cd script && ./unpack.sh $(APK_NAME)
+
+deploy: linux-amd64 unpack web
+	docker-compose up -d
 
 clean:
 	rm -rf $(BINDIR)/$(NAME)-*

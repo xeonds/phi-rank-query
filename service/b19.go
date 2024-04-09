@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/tls"
 	"encoding/base64"
 	"fmt"
 	"io"
@@ -115,7 +116,7 @@ type GameRecord struct {
 }
 
 // 获取用户信息
-func GetuserInfo(session string) ([]byte, error) {
+func GetuserInfo(config *config.Config, session string) ([]byte, error) {
 	req, err := http.NewRequest("GET", UserInfo, nil)
 	if err != nil {
 		return nil, err
@@ -123,8 +124,14 @@ func GetuserInfo(session string) ([]byte, error) {
 	setHeader(req)
 	req.Header.Set("X-LC-Session", session)
 
-	client := http.DefaultClient
-	resp, err := client.Do(req)
+	// 修复因为不信任证书导致的无法访问
+	resp, err := (&http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: config.Server.InsecureSkipVerify,
+			},
+		},
+	}).Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +146,7 @@ func GetuserInfo(session string) ([]byte, error) {
 }
 
 // 获取存档信息
-func GetB19Info(session string) ([]byte, error) {
+func GetB19Info(config *config.Config, session string) ([]byte, error) {
 	req, err := http.NewRequest("GET", Save, nil)
 	if err != nil {
 		return nil, err
@@ -147,8 +154,15 @@ func GetB19Info(session string) ([]byte, error) {
 	setHeader(req)
 	req.Header.Set("X-LC-Session", session)
 
-	client := http.DefaultClient
-	resp, err := client.Do(req)
+	log.Println(config.Server.InsecureSkipVerify)
+	// 修复因为不信任证书导致的无法访问
+	resp, err := (&http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: config.Server.InsecureSkipVerify,
+			},
+		},
+	}).Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -163,8 +177,20 @@ func GetB19Info(session string) ([]byte, error) {
 }
 
 // 获取存档文件
-func GetSaveZip(saveURL string) (*zip.Reader, error) {
-	resp, err := http.Get(saveURL)
+func GetSaveZip(config *config.Config, session, saveURL string) (*zip.Reader, error) {
+	req, err := http.NewRequest("GET", saveURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// 修复因为不信任证书导致的无法访问
+	resp, err := (&http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: config.Server.InsecureSkipVerify,
+			},
+		},
+	}).Do(req)
 	if err != nil {
 		return nil, err
 	}
