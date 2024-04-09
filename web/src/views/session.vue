@@ -1,6 +1,6 @@
 <template>
     <div class="p-4">
-        <h1 class="text-2xl font-bold mb-4">Sessions</h1>
+        <h1 class="text-2xl font-bold mb-4 text-gray-400">Sessions</h1>
         <div class="flex items-center mb-4">
             <input type="text" v-model="newSession" placeholder="Enter a session"
                 class="input input-ghost input-bordered w-full max-w-xs mr-2 p-2 border border-gray-800 rounded" />
@@ -13,12 +13,12 @@
         <div v-if="sessions.length === 0" class="text-gray-500">
             No sessions added yet.
         </div>
-        <table class="table border-collapse" v-else>
+        <table class="table border-collapse text-gray-400" v-else>
             <thead>
                 <tr>
-                    <th class="py-2 px-4 border-b">Session</th>
-                    <th class="py-2 px-4 border-b">Alias</th>
-                    <th class="py-2 px-4 border-b">Action</th>
+                    <th class="py-2 px-4 border-b text-gray-400">Session</th>
+                    <th class="py-2 px-4 border-b text-gray-400">Alias</th>
+                    <th class="py-2 px-4 border-b text-gray-400">Action</th>
                 </tr>
             </thead>
             <tbody>
