@@ -12,7 +12,7 @@ import (
 	"github.com/xeonds/phi-plug-go/service"
 )
 
-const session = "9r5shbrhcz9omano8qx5ahn3f"
+var session = os.Getenv("SESSION")
 
 func TestB19(t *testing.T) {
 	b19Data, err := service.GetB19Info(session)
