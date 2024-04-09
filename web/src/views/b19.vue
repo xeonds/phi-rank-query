@@ -291,7 +291,7 @@ const parseData = (data: any) => {
     rank: item.Level || '',
     difficulty: item.Difficulty || '',
     rks: item.Rks.toString() || '',
-    Rating: getRating(item.Score) || '',
+    Rating: item.FullCombo ? 'FC' : getRating(item.Score) || '',
     score: item.Score.toString() || '',
     acc: (item.Acc + .005).toFixed(2).toString() || '',
     suggest: ''

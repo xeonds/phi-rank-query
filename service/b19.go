@@ -257,6 +257,7 @@ type Record struct {
 	Difficulty   string
 	Level        string
 	Acc          float64
+	FullCombo    bool
 	Song         string
 	Illustration string
 }
@@ -292,17 +293,20 @@ func CalcBNInfo(data *Game, config *config.Config, nnum int) ([]Record, float64,
 				Difficulty:   difficulty[titleTrim][difficulty_map[level]],
 				Level:        difficulty_map[level],
 				Acc:          float64(tem.Acc),
+				FullCombo:    tem.Fc,
 				Song:         songInfo[titleTrim]["song"],
 				Illustration: getIllustration(titleTrim),
 			}
 			if tem.Acc >= 100 {
 				if songRank.Rks > phi.Rks {
+					phi.Id = titleTrim
 					phi.Rks = songRank.Rks
 					phi.Acc = songRank.Acc
 					phi.Score = songRank.Score
 					phi.Song = songRank.Song
 					phi.Illustration = songRank.Illustration
 					phi.Difficulty = songRank.Difficulty
+					phi.FullCombo = songRank.FullCombo
 					phi.Level = songRank.Level
 				}
 			}
