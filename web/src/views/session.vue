@@ -2,29 +2,18 @@
     <div class="p-4">
         <h1 class="text-2xl font-bold mb-4">Sessions</h1>
         <div class="flex items-center mb-4">
-            <input
-                type="text"
-                v-model="newSession"
-                placeholder="Enter a session"
-                class="input input-ghost input-bordered w-full max-w-xs mr-2 p-2 border border-gray-800 rounded"
-            />
-            <input
-                type="text"
-                v-model="newAlias"
-                placeholder="Enter alias"
-                class="input input-ghost input-bordered w-full max-w-xs mr-2 p-2 border border-gray-800 rounded"
-            />
-            <button
-                @click="addSession"
-                class="px-4 py-2 text-white btn btn-outline btn-primary"
-            >
+            <input type="text" v-model="newSession" placeholder="Enter a session"
+                class="input input-ghost input-bordered w-full max-w-xs mr-2 p-2 border border-gray-800 rounded" />
+            <input type="text" v-model="newAlias" placeholder="Enter alias"
+                class="input input-ghost input-bordered w-full max-w-xs mr-2 p-2 border border-gray-800 rounded" />
+            <button @click="addSession" class="px-4 py-2 text-white btn btn-outline btn-primary">
                 Add Session
             </button>
         </div>
         <div v-if="sessions.length === 0" class="text-gray-500">
             No sessions added yet.
         </div>
-        <table class="table" v-else>
+        <table class="table border-collapse" v-else>
             <thead>
                 <tr>
                     <th>Session</th>
@@ -33,28 +22,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(session, index) in sessions" :key="index">
-                    <td>
-                        <input
-                            type="radio"
-                            :id="'session-' + index"
-                            :value="session"
-                            v-model="selectedSession"
-                            class="mr-2 radio"
-                        />
+                <tr v-for="(session, index) in sessions" :key="index" >
+                    <td class="py-2 px-4 border-b">
+                        <input type="radio" :id="'session-' + index" :value="session" v-model="selectedSession"
+                            class="mr-2 radio" />
                         <label :for="'session-' + index" class="mr-2">
                             {{ session.split('').slice(0, 3).join('') }}***
                             {{ session.split('').slice(-3).join('') }}
                         </label>
                     </td>
-                    <td>
+                    <td class="py-2 px-4 border-b">
                         <label :for="'alias-' + index" class="mr-2">{{ aliases[index] }}</label>
                     </td>
-                    <td>
-                        <button
-                            @click="deleteSession(index)"
-                            class="px-2 py-1 btn btn-outline btn-warning"
-                        >
+                    <td class="py-2 px-4 border-b">
+                        <button @click="deleteSession(index)" class="px-2 py-1 btn btn-outline btn-warning">
                             Delete
                         </button>
                     </td>

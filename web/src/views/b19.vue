@@ -208,10 +208,10 @@ const sessionToken = ref('');
 const askForSessionToken = () => {
   var token = sessionStorage.getItem('selectedSession');
   if (!token) {
-    alert('请选择Session');
-    window.location.href = '/#/session';
+    return false;
   } else {
     sessionToken.value = token!;
+    return true;
   }
 }
 const fetchData = async (sessionToken: string) => {
@@ -299,13 +299,17 @@ const parseData = (data: any) => {
 }
 
 onMounted(async () => {
-  askForSessionToken();
-  const { data, err } = await fetchData(sessionToken.value)
-  if (err.value != null) {
-    alert('查询失败，请重试');
-    window.location.href = '/#/';
+  if (askForSessionToken()) {
+    const { data, err } = await fetchData(sessionToken.value)
+    if (err.value != null) {
+      alert('查询失败，请重试');
+      window.location.href = '/#/';
+    }
+    parseData(data.value);
+  } else {
+    alert('请选择Session');
+    window.location.href = '/#/session';
   }
-  parseData(data.value);
 });
 </script>
 

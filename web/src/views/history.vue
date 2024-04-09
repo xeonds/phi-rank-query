@@ -1,6 +1,11 @@
 <template>
     <div class="p-4">
         <h1 class="text-2xl font-bold mb-4">History</h1>
+        <div class="flex items-center mb-4">
+            <button @click="exportHistory" class="px-4 py-2 text-white btn btn-outline btn-primary">
+                Export History
+            </button>
+        </div>
         <table class="table w-full border-collapse">
             <thead>
                 <tr>
@@ -17,12 +22,23 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { Ref, onMounted, ref } from 'vue';
 
-const historyScores = ref([])
+const historyScores: Ref<any[]> = ref([])
+
+const exportHistory = () => {
+    const data = JSON.stringify({ data: historyScores.value });
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'history.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
 onMounted(() => {
-    historyScores.value = JSON.parse(localStorage.getItem('history')||'[]');
-    console.log(historyScores.value)
+    historyScores.value = JSON.parse(localStorage.getItem('history')||'[]').data;
 })
 </script>
 

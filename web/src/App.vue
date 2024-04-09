@@ -8,10 +8,10 @@
                     <h1 class="text-gray-400 text-3xl font-bold text-white">Phi Rank Query</h1>
                 </div>
                 <div class="space-x-4">
-                    <a href="/#/" class="link link-hover">主页</a>
-                    <a href="/#/b19" class="link link-hover">B19查询</a>
-                    <a href="/#/history" class="link link-hover">查询历史</a>
-                    <a href="/#/session" class="link link-hover">Sessions</a>
+                    <a href="/#/" class="link link-hover text-gray-300">主页</a>
+                    <a href="/#/b19" class="link link-hover text-gray-300">B19查询</a>
+                    <a href="/#/history" class="link link-hover text-gray-300">查询历史</a>
+                    <a href="/#/session" class="link link-hover text-gray-300">Sessions</a>
                 </div>
             </nav>
             <router-view></router-view>
