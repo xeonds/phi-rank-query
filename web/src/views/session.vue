@@ -16,9 +16,9 @@
         <table class="table border-collapse" v-else>
             <thead>
                 <tr>
-                    <th>Session</th>
-                    <th>Alias</th>
-                    <th>Action</th>
+                    <th class="py-2 px-4 border-b">Session</th>
+                    <th class="py-2 px-4 border-b">Alias</th>
+                    <th class="py-2 px-4 border-b">Action</th>
                 </tr>
             </thead>
             <tbody>
