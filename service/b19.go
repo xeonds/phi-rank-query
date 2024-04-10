@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/tls"
 	"encoding/base64"
 	"fmt"
 	"io"
@@ -13,6 +14,7 @@ import (
 	"net/http"
 	"sort"
 	"strconv"
+	"time"
 
 	"github.com/xeonds/phi-plug-go/config"
 	"github.com/xeonds/phi-plug-go/lib"
@@ -60,6 +62,37 @@ type GameSave struct {
 			Objectid  string `json:"objectid"`
 		} `json:"user"`
 	} `json:"results"`
+}
+type GameAccount struct {
+	ACL struct {
+		NAMING_FAILED struct {
+			Write bool `json:"write"`
+			Read  bool `json:"read"`
+		} `json:"*"`
+	} `json:"ACL"`
+	AuthData struct {
+		Taptap struct {
+			AccessToken  string `json:"access_token"`
+			Avatar       string `json:"avatar"`
+			Kid          string `json:"kid"`
+			MacAlgorithm string `json:"mac_algorithm"`
+			MacKey       string `json:"mac_key"`
+			Name         string `json:"name"`
+			Openid       string `json:"openid"`
+			TokenType    string `json:"token_type"`
+			Unionid      string `json:"unionid"`
+		} `json:"taptap"`
+	} `json:"authData"`
+	Avatar              string    `json:"avatar"`
+	CreatedAt           time.Time `json:"createdAt"`
+	EmailVerified       bool      `json:"emailVerified"`
+	MobilePhoneVerified bool      `json:"mobilePhoneVerified"`
+	Nickname            string    `json:"nickname"`
+	ObjectID            string    `json:"objectId"`
+	SessionToken        string    `json:"sessionToken"`
+	ShortID             string    `json:"shortId"`
+	UpdatedAt           time.Time `json:"updatedAt"`
+	Username            string    `json:"username"`
 }
 type GameProcess struct {
 	IsFirstRun                 bool
@@ -115,7 +148,7 @@ type GameRecord struct {
 }
 
 // 获取用户信息
-func GetuserInfo(session string) ([]byte, error) {
+func GetuserInfo(config *config.Config, session string) ([]byte, error) {
 	req, err := http.NewRequest("GET", UserInfo, nil)
 	if err != nil {
 		return nil, err
@@ -123,8 +156,14 @@ func GetuserInfo(session string) ([]byte, error) {
 	setHeader(req)
 	req.Header.Set("X-LC-Session", session)
 
-	client := http.DefaultClient
-	resp, err := client.Do(req)
+	// 修复因为不信任证书导致的无法访问
+	resp, err := (&http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: config.Server.InsecureSkipVerify,
+			},
+		},
+	}).Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +178,7 @@ func GetuserInfo(session string) ([]byte, error) {
 }
 
 // 获取存档信息
-func GetB19Info(session string) ([]byte, error) {
+func GetB19Info(config *config.Config, session string) ([]byte, error) {
 	req, err := http.NewRequest("GET", Save, nil)
 	if err != nil {
 		return nil, err
@@ -147,8 +186,15 @@ func GetB19Info(session string) ([]byte, error) {
 	setHeader(req)
 	req.Header.Set("X-LC-Session", session)
 
-	client := http.DefaultClient
-	resp, err := client.Do(req)
+	log.Println(config.Server.InsecureSkipVerify)
+	// 修复因为不信任证书导致的无法访问
+	resp, err := (&http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: config.Server.InsecureSkipVerify,
+			},
+		},
+	}).Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -163,8 +209,20 @@ func GetB19Info(session string) ([]byte, error) {
 }
 
 // 获取存档文件
-func GetSaveZip(saveURL string) (*zip.Reader, error) {
-	resp, err := http.Get(saveURL)
+func GetSaveZip(config *config.Config, session, saveURL string) (*zip.Reader, error) {
+	req, err := http.NewRequest("GET", saveURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	// 修复因为不信任证书导致的无法访问
+	resp, err := (&http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: config.Server.InsecureSkipVerify,
+			},
+		},
+	}).Do(req)
 	if err != nil {
 		return nil, err
 	}
