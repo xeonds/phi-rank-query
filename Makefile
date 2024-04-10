@@ -2,7 +2,7 @@ NAME=phi-rank-query
 BINDIR=build
 VERSION=1.0.0
 BUILDTIME=$(shell date -u)
-APK_NAME="../build/Phigros_3.6.0.APK"
+APK_NAME="../build/Phigros.apk"
 GOBUILD=go mod tidy && go build -ldflags '-s -w -X "main.version=$(VERSION)" -X "main.buildTime=$(BUILDTIME)"'
 FRONTBUILD=cd web && pnpm i && pnpm run build --outDir=../$(BINDIR)/dist --emptyOutDir
 
@@ -27,7 +27,8 @@ init:
 	(cd web && pnpm i)
 
 unpack:
-	cd script && ./unpack.sh $(APK_NAME)
+	(cd web/public/assets && rm -rf ./illustrations) &&\
+	(cd script && ./unpack.sh $(APK_NAME))
 
 deploy: linux-amd64 unpack web
 	docker-compose up -d
