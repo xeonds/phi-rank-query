@@ -15,6 +15,17 @@ import (
 var session = os.Getenv("SESSION")
 var conf = lib.LoadConfig[config.Config]()
 
+func TestUserInfo(t *testing.T) {
+	userData, err := service.GetuserInfo(conf, session)
+	if err != nil {
+		t.Fatalf("Failed to get user data: %v", err)
+	}
+	err = os.WriteFile("user.json", userData, 0644)
+	if err != nil {
+		t.Fatalf("Failed to write JSON data to file: %v", err)
+	}
+}
+
 func TestB19(t *testing.T) {
 	b19Data, err := service.GetB19Info(conf, session)
 	if err != nil {

@@ -38,6 +38,13 @@ func GetB19(config *config.Config) func(c *gin.Context) {
 			c.JSON(400, gin.H{"msg": "session is empty"})
 			return
 		}
+		accountInfoDump, err := service.GetuserInfo(config, post.Session)
+		if err != nil {
+			c.JSON(400, gin.H{"msg": err.Error()})
+			return
+		}
+		accountInfo := new(service.GameAccount)
+		_ = json.Unmarshal(accountInfoDump, accountInfo)
 		userInfoDump, err := service.GetB19Info(config, post.Session)
 		if err != nil {
 			c.JSON(400, gin.H{"msg": err.Error()})
@@ -53,7 +60,7 @@ func GetB19(config *config.Config) func(c *gin.Context) {
 		game := service.DecryptSaveZip(saveZip)
 		b19, rks, phi := service.CalcBNInfo(game, config, 19)
 		c.JSON(200, gin.H{
-			"player":    game.GameUser.Name,
+			"player":    accountInfo.Nickname,
 			"b19":       b19,
 			"rks":       rks,
 			"phi":       phi,

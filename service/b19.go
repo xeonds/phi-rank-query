@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"sort"
 	"strconv"
+	"time"
 
 	"github.com/xeonds/phi-plug-go/config"
 	"github.com/xeonds/phi-plug-go/lib"
@@ -61,6 +62,37 @@ type GameSave struct {
 			Objectid  string `json:"objectid"`
 		} `json:"user"`
 	} `json:"results"`
+}
+type GameAccount struct {
+	ACL struct {
+		NAMING_FAILED struct {
+			Write bool `json:"write"`
+			Read  bool `json:"read"`
+		} `json:"*"`
+	} `json:"ACL"`
+	AuthData struct {
+		Taptap struct {
+			AccessToken  string `json:"access_token"`
+			Avatar       string `json:"avatar"`
+			Kid          string `json:"kid"`
+			MacAlgorithm string `json:"mac_algorithm"`
+			MacKey       string `json:"mac_key"`
+			Name         string `json:"name"`
+			Openid       string `json:"openid"`
+			TokenType    string `json:"token_type"`
+			Unionid      string `json:"unionid"`
+		} `json:"taptap"`
+	} `json:"authData"`
+	Avatar              string    `json:"avatar"`
+	CreatedAt           time.Time `json:"createdAt"`
+	EmailVerified       bool      `json:"emailVerified"`
+	MobilePhoneVerified bool      `json:"mobilePhoneVerified"`
+	Nickname            string    `json:"nickname"`
+	ObjectID            string    `json:"objectId"`
+	SessionToken        string    `json:"sessionToken"`
+	ShortID             string    `json:"shortId"`
+	UpdatedAt           time.Time `json:"updatedAt"`
+	Username            string    `json:"username"`
 }
 type GameProcess struct {
 	IsFirstRun                 bool
