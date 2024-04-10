@@ -248,8 +248,9 @@ const fetchData = async (sessionToken: string) => {
     return { data, err };
   }
 }
-const getRating = (score: number) => {
+const getRating = (fc: boolean, score: number) => {
   if (score >= 1000000) return 'phi';
+  if (fc) return 'FC';
   if (score >= 960000) return 'V';
   if (score >= 920000) return 'S';
   if (score >= 880000) return 'A';
@@ -291,7 +292,7 @@ const parseData = (data: any) => {
     rank: item.Level || '',
     difficulty: item.Difficulty || '',
     rks: item.Rks.toString() || '',
-    Rating: item.FullCombo ? 'FC' : getRating(item.Score) || '',
+    Rating: getRating(item.FullCombo, item.Score) || '',
     score: item.Score.toString() || '',
     acc: (item.Acc + .005).toFixed(2).toString() || '',
     suggest: ''
