@@ -14,10 +14,10 @@ import (
 	"net/http"
 	"sort"
 	"strconv"
-	"time"
 
 	"github.com/xeonds/phi-plug-go/config"
 	"github.com/xeonds/phi-plug-go/lib"
+	"github.com/xeonds/phi-plug-go/model"
 )
 
 // api addresses
@@ -27,125 +27,6 @@ const FileCallback = BaseURL + "/fileCallback"
 const Save = BaseURL + "/classes/_GameSave"
 const UserInfo = BaseURL + "/users/me"
 const Files = BaseURL + "/files/"
-
-type GameSave struct {
-	Results []struct {
-		Createdat string `json:"createdat"`
-		Gamefile  struct {
-			Type      string `json:"__type"`
-			Bucket    string `json:"bucket"`
-			Createdat string `json:"createdat"`
-			Key       string `json:"key"`
-			Metadata  struct {
-				Checksum string `json:"_checksum"`
-				Prefix   string `json:"prefix"`
-				Size     int    `json:"size"`
-			} `json:"metadata"`
-			MimeType  string `json:"mime_type"`
-			Name      string `json:"name"`
-			Objectid  string `json:"objectid"`
-			Provider  string `json:"provider"`
-			Updatedat string `json:"updatedat"`
-			URL       string `json:"url"`
-		} `json:"gamefile"`
-		Modifiedat struct {
-			Type string `json:"__type"`
-			Iso  string `json:"iso"`
-		} `json:"modifiedat"`
-		Name      string `json:"name"`
-		Objectid  string `json:"objectid"`
-		Summary   string `json:"summary"`
-		Updatedat string `json:"updatedat"`
-		User      struct {
-			Type      string `json:"__type"`
-			Classname string `json:"classname"`
-			Objectid  string `json:"objectid"`
-		} `json:"user"`
-	} `json:"results"`
-}
-type GameAccount struct {
-	ACL struct {
-		NAMING_FAILED struct {
-			Write bool `json:"write"`
-			Read  bool `json:"read"`
-		} `json:"*"`
-	} `json:"ACL"`
-	AuthData struct {
-		Taptap struct {
-			AccessToken  string `json:"access_token"`
-			Avatar       string `json:"avatar"`
-			Kid          string `json:"kid"`
-			MacAlgorithm string `json:"mac_algorithm"`
-			MacKey       string `json:"mac_key"`
-			Name         string `json:"name"`
-			Openid       string `json:"openid"`
-			TokenType    string `json:"token_type"`
-			Unionid      string `json:"unionid"`
-		} `json:"taptap"`
-	} `json:"authData"`
-	Avatar              string    `json:"avatar"`
-	CreatedAt           time.Time `json:"createdAt"`
-	EmailVerified       bool      `json:"emailVerified"`
-	MobilePhoneVerified bool      `json:"mobilePhoneVerified"`
-	Nickname            string    `json:"nickname"`
-	ObjectID            string    `json:"objectId"`
-	SessionToken        string    `json:"sessionToken"`
-	ShortID             string    `json:"shortId"`
-	UpdatedAt           time.Time `json:"updatedAt"`
-	Username            string    `json:"username"`
-}
-type GameProcess struct {
-	IsFirstRun                 bool
-	LegacyChapterFinished      bool
-	AlreadyShowCollectionTip   bool
-	AlreadyShowAutoUnlockINTip bool
-	Completed                  string
-	SongUpdateInfo             int
-	ChallengeModeRank          int16
-	Money                      [5]int
-	UnlockFlagOfSpasmodic      byte
-	UnlockFlagOfIgallta        byte
-	UnlockFlagOfRrharil        byte
-	FlagOfSongRecordKey        byte
-	RandomVersionUnlocked      byte
-	Chapter8UnlockBegin        bool
-	Chapter8UnlockSecondPhase  bool
-	Chapter8Passed             bool
-	Chapter8SongUnlocked       byte
-}
-type LevelRecord struct {
-	Score uint32
-	Acc   float32
-	Fc    bool
-}
-type GameUser struct {
-	Name         string
-	Version      int
-	ShowPlayerId bool
-	SelfIntro    string
-	Avatar       string
-	Background   string
-}
-type GameSettings struct {
-	ChordSupport      bool
-	FcAPIndicator     bool
-	EnableHitSound    bool
-	LowResolutionMode bool
-	DeviceName        string
-	Bright            float32
-	MusicVolume       float32
-	EffectVolume      float32
-	HitSoundVolume    float32
-	SoundOffset       float32
-	NoteScale         float32
-}
-type GameRecord struct {
-	Name     string
-	Version  int
-	Data     *lib.ByteReader
-	Record   map[string][]*LevelRecord
-	Songsnum int
-}
 
 // 获取用户信息
 func GetuserInfo(config *config.Config, session string) ([]byte, error) {
@@ -245,16 +126,8 @@ func GetSaveZip(config *config.Config, session, saveURL string) (*zip.Reader, er
 	return saveZip, nil
 }
 
-// 存档信息
-type Game struct {
-	GameProgress *GameProcess
-	GameUser     *GameUser
-	GameSettings *GameSettings
-	GameRecord   *GameRecord
-}
-
 // 解析存档文件
-func DecryptSaveZip(savezip *zip.Reader) *Game {
+func DecryptSaveZip(savezip *zip.Reader) *model.Game {
 	gameProgressFile, err := savezip.Open("gameProgress")
 	if err != nil {
 		log.Fatal(err)
@@ -299,7 +172,7 @@ func DecryptSaveZip(savezip *zip.Reader) *Game {
 	}
 	record := Decrypt(gameRecordData[1:])
 
-	return &Game{
+	return &model.Game{
 		GameProgress: NewGameProcess(gameProgress),
 		GameUser:     NewGameUser(gameuser),
 		GameSettings: NewGameSettings(gamesettings),
@@ -307,22 +180,9 @@ func DecryptSaveZip(savezip *zip.Reader) *Game {
 	}
 }
 
-// 单曲Rks信息
-type Record struct {
-	Id           string
-	Rks          float64
-	Score        uint32
-	Difficulty   string
-	Level        string
-	Acc          float64
-	FullCombo    bool
-	Song         string
-	Illustration string
-}
-
 // 计算BN信息
-func CalcBNInfo(data *Game, config *config.Config) ([]Record, float64, Record) {
-	phi := Record{}
+func CalcBNInfo(data *model.Game, config *config.Config) ([]model.Record, float64, model.Record) {
+	phi := model.Record{}
 	difficulty, err := lib.LoadCSV(config.Data.Difficulty)
 	if err != nil {
 		log.Fatal("reading difficulty: ", err)
@@ -333,7 +193,7 @@ func CalcBNInfo(data *Game, config *config.Config) ([]Record, float64, Record) {
 	}
 	comRks := 0.0
 	phi.Rks = 0.0
-	var rksList []Record
+	var rksList []model.Record
 	for title, song := range data.GameRecord.Record {
 		titleTrim := title[:len(title)-2]
 		for level, tem := range song {
@@ -344,7 +204,7 @@ func CalcBNInfo(data *Game, config *config.Config) ([]Record, float64, Record) {
 			if tem == nil {
 				continue
 			}
-			songRank := Record{
+			songRank := model.Record{
 				Id:           titleTrim,
 				Rks:          CalcSongRank(tem.Acc, difficulty[titleTrim][difficulty_map[level]]),
 				Score:        tem.Score,
@@ -438,9 +298,9 @@ func setHeader(req *http.Request) {
 	req.Header.Set("User-Agent", "LeanCloud-CSharp-SDK/1.0.3")
 	req.Header.Set("Accept", "application/json")
 }
-func NewGameProcess(data []byte) *GameProcess {
+func NewGameProcess(data []byte) *model.GameProcess {
 	reader := lib.NewByteReader(data)
-	gameProcess := &GameProcess{}
+	gameProcess := &model.GameProcess{}
 	tem := reader.GetByte()
 	gameProcess.IsFirstRun = getBit(tem, 0)
 	gameProcess.LegacyChapterFinished = getBit(tem, 1)
@@ -464,9 +324,9 @@ func NewGameProcess(data []byte) *GameProcess {
 	gameProcess.Chapter8SongUnlocked = reader.GetByte()
 	return gameProcess
 }
-func NewGameUser(data []byte) *GameUser {
+func NewGameUser(data []byte) *model.GameUser {
 	reader := lib.NewByteReader(data)
-	gameUser := &GameUser{}
+	gameUser := &model.GameUser{}
 	gameUser.Name = "user"
 	gameUser.Version = 1
 	gameUser.ShowPlayerId = getBit(reader.GetByte(), 0)
@@ -475,9 +335,9 @@ func NewGameUser(data []byte) *GameUser {
 	gameUser.Background = reader.GetString()
 	return gameUser
 }
-func NewGameSettings(data []byte) *GameSettings {
+func NewGameSettings(data []byte) *model.GameSettings {
 	reader := lib.NewByteReader(data)
-	gameSettings := &GameSettings{}
+	gameSettings := &model.GameSettings{}
 	tem := reader.GetByte()
 	gameSettings.ChordSupport = getBit(tem, 0)
 	gameSettings.FcAPIndicator = getBit(tem, 1)
@@ -492,12 +352,12 @@ func NewGameSettings(data []byte) *GameSettings {
 	gameSettings.NoteScale = reader.GetFloat()
 	return gameSettings
 }
-func NewGameRecord(data []byte) *GameRecord {
-	gameRecord := &GameRecord{
+func NewGameRecord(data []byte) *model.GameRecord {
+	gameRecord := &model.GameRecord{
 		Name:    "gameRecord",
 		Version: 1,
 		Data:    lib.NewByteReader(data),
-		Record:  make(map[string][]*LevelRecord),
+		Record:  make(map[string][]*model.LevelRecord),
 	}
 	gameRecord.Songsnum = int(gameRecord.Data.GetVarInt())
 	for gameRecord.Data.Remaining() > 32 {
@@ -505,11 +365,11 @@ func NewGameRecord(data []byte) *GameRecord {
 		gameRecord.Data.SkipVarInt(0)
 		length := gameRecord.Data.GetByte()
 		fc := gameRecord.Data.GetByte()
-		song := make([]*LevelRecord, 5)
+		song := make([]*model.LevelRecord, 5)
 
 		for level := 0; level < 5; level++ {
 			if getBit(length, uint(level)) {
-				song[level] = &LevelRecord{}
+				song[level] = &model.LevelRecord{}
 				song[level].Score = gameRecord.Data.GetInt()
 				song[level].Acc = gameRecord.Data.GetFloat()
 				song[level].Fc = getBit(fc, uint(level))

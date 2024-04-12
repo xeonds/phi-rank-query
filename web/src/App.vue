@@ -6,13 +6,14 @@
         <div class="container mx-auto relative z-10">
             <nav class="flex justify-between items-center py-4 relative">
                 <div>
-                    <h1 class="text-gray-400 text-3xl font-bold">Phi Rank Query</h1>
+                    <h1 class="text-gray-200 text-3xl font-bold">Phi Rank Query</h1>
                 </div>
                 <div class="space-x-4">
                     <a href="/#/" class="link link-hover text-gray-300">主页</a>
                     <a href="/#/b19" class="link link-hover text-gray-300">B19查询</a>
                     <a href="/#/bn" class="link link-hover text-gray-300">所有成绩查询</a>
                     <a href="/#/history" class="link link-hover text-gray-300">查询历史</a>
+                    <a href="/#/leaderboard" class="link link-hover text-gray-300">排行榜</a>
                     <a href="/#/session" class="link link-hover text-gray-300">Sessions</a>
                 </div>
             </nav>

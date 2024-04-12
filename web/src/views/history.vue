@@ -52,7 +52,7 @@ onMounted(() => {
       alert('Please select a session first');
       window.location.href = '/#/session';
     }
-    historyScores.value = JSON.parse(localStorage.getItem('history')||'[]').data;
+    historyScores.value = JSON.parse(localStorage.getItem('history-'+sessionToken.value)||'[]').data;
 })
 </script>
 

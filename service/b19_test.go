@@ -9,6 +9,7 @@ import (
 
 	"github.com/xeonds/phi-plug-go/config"
 	"github.com/xeonds/phi-plug-go/lib"
+	"github.com/xeonds/phi-plug-go/model"
 	"github.com/xeonds/phi-plug-go/service"
 )
 
@@ -42,7 +43,7 @@ func TestGetRankUrl(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to read file: %v", err)
 	}
-	data := new(service.GameSave)
+	data := new(model.GameSave)
 	if err = json.Unmarshal(f, &data); err != nil {
 		t.Fatalf("Failed to unmarshal JSON data: %v", err)
 	}
@@ -55,7 +56,7 @@ func TestGetZipAndDecrypt(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to read file: %v", err)
 	}
-	data := new(service.GameSave)
+	data := new(model.GameSave)
 	if err = json.Unmarshal(f, &data); err != nil {
 		t.Fatalf("Failed to unmarshal JSON data: %v", err)
 	}
@@ -97,7 +98,7 @@ func TestCalcRks(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to read file: %v", err)
 	}
-	data := new(service.Game)
+	data := new(model.Game)
 	if err = json.Unmarshal(f, &data); err != nil {
 		t.Fatalf("Failed to unmarshal JSON data: %v", err)
 	}

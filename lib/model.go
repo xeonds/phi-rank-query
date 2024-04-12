@@ -1,20 +1,14 @@
 package lib
 
-import "time"
+import (
+	"time"
+)
 
 type UserClaim struct {
 	ID         int       `json:"id"`
 	Permission int       `json:"permission"`
 	Name       string    `json:"name"`
 	Expire     time.Time `json:"expire"` // token过期时间
-}
-
-type User struct {
-	ID         uint   `gorm:"primary_key" json:"id"`
-	Username   string `json:"username"`
-	Email      string `json:"email"`
-	Password   string `json:"password"`
-	Permission int    `json:"permission"`
 }
 
 // 通用配置

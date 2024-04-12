@@ -2,7 +2,7 @@
     <div>
         <header class="py-4">
             <div class="container mx-auto px-4">
-                <h1 class="text-gray-200 text-white text-4xl font-bold">欢迎使用Phigros Rks查询工具</h1>
+                <h1 class="text-gray-200 text-4xl font-bold">欢迎使用Phigros Rks查询工具</h1>
                 <p class="text-white mt-2">👽</p>
             </div>
         </header>
