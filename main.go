@@ -22,6 +22,7 @@ func main() {
 	api.POST("/b19", GetB19(config, db))
 	api.POST("/bn", GetBN(config, db))
 	api.GET("/leaderboard", GetLeaderboard(db))
+	api.GET("/rank_table", GetRankTable(config))
 	lib.AddStatic(router, []string{"./dist"})
 	router.Run(config.Server.Port)
 }
@@ -131,5 +132,24 @@ func GetLeaderboard(db *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		users := service.GetLeaderboard(db)
 		c.JSON(200, users)
+	}
+}
+
+func GetRankTable(config *config.Config) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		rankTable, err := lib.LoadCSV(config.Data.Difficulty)
+		if err != nil {
+			c.JSON(400, gin.H{"msg": err.Error()})
+			return
+		}
+		songInfo, err := lib.LoadCSV(config.Data.Info)
+		if err != nil {
+			c.JSON(400, gin.H{"msg": err.Error()})
+			return
+		}
+		for i := range rankTable {
+			rankTable[i]["title"] = songInfo[i]["song"]
+		}
+		c.JSON(200, rankTable)
 	}
 }
