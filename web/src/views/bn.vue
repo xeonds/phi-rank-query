@@ -215,7 +215,7 @@ const askForSessionToken = () => {
   }
 }
 const fetchData = async (sessionToken: string) => {
-  const cacheKey = 'history-'+sessionToken;
+  const cacheKey = 'history-' + sessionToken;
   const cacheTimeout = 60000; // 1 minute in milliseconds
 
   const currentTime = Date.now();
@@ -227,7 +227,7 @@ const fetchData = async (sessionToken: string) => {
   } else {
     const data: Ref<any> = ref(null);
     const err: Ref<any> = ref(null);
-    await fetch('/api/v1/b19', {
+    await fetch('/api/v1/bn', {
       method: 'POST',
       body: JSON.stringify({ session: sessionToken }),
       headers: {

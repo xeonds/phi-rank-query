@@ -25,6 +25,7 @@
 import { Ref, onMounted, ref } from 'vue';
 
 const historyScores: Ref<any[]> = ref([])
+const sessionToken = ref<string>('');
 
 const exportHistory = () => {
     const data = JSON.stringify({ data: historyScores.value });
@@ -36,8 +37,21 @@ const exportHistory = () => {
     a.click();
     URL.revokeObjectURL(url);
 }
+const askForSessionToken = () => {
+  var token = sessionStorage.getItem('selectedSession');
+  if (!token) {
+    return false;
+  } else {
+    sessionToken.value = token!;
+    return true;
+  }
+}
 
 onMounted(() => {
+    if (!askForSessionToken()) {
+      alert('Please select a session first');
+      window.location.href = '/#/session';
+    }
     historyScores.value = JSON.parse(localStorage.getItem('history')||'[]').data;
 })
 </script>

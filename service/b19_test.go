@@ -102,7 +102,7 @@ func TestCalcRks(t *testing.T) {
 		t.Fatalf("Failed to unmarshal JSON data: %v", err)
 	}
 	config := lib.LoadConfig[config.Config]()
-	b19, rks, phi := service.CalcBNInfo(data, config, 19)
+	b19, rks, phi := service.CalcBNInfo(data, config)
 	tmp, err := json.Marshal(map[string]interface{}{
 		"b19": b19,
 		"rks": rks,

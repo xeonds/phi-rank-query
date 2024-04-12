@@ -19,6 +19,7 @@ func main() {
 	router := gin.Default()
 	api := router.Group("/api/v1")
 	api.POST("/b19", GetB19(config))
+	api.POST("/bn", GetBN(config))
 	// TODO: 登陆后查询
 	lib.AddLoginAPI(api, "/login", db)
 	lib.AddStatic(router, []string{"./dist"})
@@ -58,10 +59,55 @@ func GetB19(config *config.Config) func(c *gin.Context) {
 			return
 		}
 		game := service.DecryptSaveZip(saveZip)
-		b19, rks, phi := service.CalcBNInfo(game, config, 19)
+		bn, rks, phi := service.CalcBNInfo(game, config)
 		c.JSON(200, gin.H{
 			"player":    accountInfo.Nickname,
-			"b19":       b19,
+			"b19":       bn[:19],
+			"rks":       rks,
+			"phi":       phi,
+			"date":      userInfo.Results[0].Gamefile.Updatedat,
+			"challenge": game.GameProgress.ChallengeModeRank,
+		})
+	}
+}
+
+func GetBN(config *config.Config) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		post := new(struct {
+			Session string `json:"session"`
+		})
+		if err := c.BindJSON(post); err != nil {
+			c.JSON(400, gin.H{"msg": err.Error()})
+			return
+		}
+		if post.Session == "" {
+			c.JSON(400, gin.H{"msg": "session is empty"})
+			return
+		}
+		accountInfoDump, err := service.GetuserInfo(config, post.Session)
+		if err != nil {
+			c.JSON(400, gin.H{"msg": err.Error()})
+			return
+		}
+		accountInfo := new(service.GameAccount)
+		_ = json.Unmarshal(accountInfoDump, accountInfo)
+		userInfoDump, err := service.GetB19Info(config, post.Session)
+		if err != nil {
+			c.JSON(400, gin.H{"msg": err.Error()})
+			return
+		}
+		userInfo := new(service.GameSave)
+		_ = json.Unmarshal(userInfoDump, userInfo)
+		saveZip, err := service.GetSaveZip(config, post.Session, userInfo.Results[0].Gamefile.URL)
+		if err != nil {
+			c.JSON(400, gin.H{"msg": err.Error()})
+			return
+		}
+		game := service.DecryptSaveZip(saveZip)
+		bn, rks, phi := service.CalcBNInfo(game, config)
+		c.JSON(200, gin.H{
+			"player":    accountInfo.Nickname,
+			"b19":       bn,
 			"rks":       rks,
 			"phi":       phi,
 			"date":      userInfo.Results[0].Gamefile.Updatedat,

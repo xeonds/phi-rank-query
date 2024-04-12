@@ -321,7 +321,7 @@ type Record struct {
 }
 
 // 计算BN信息
-func CalcBNInfo(data *Game, config *config.Config, nnum int) ([]Record, float64, Record) {
+func CalcBNInfo(data *Game, config *config.Config) ([]Record, float64, Record) {
 	phi := Record{}
 	difficulty, err := lib.LoadCSV(config.Data.Difficulty)
 	if err != nil {
@@ -389,17 +389,15 @@ func CalcBNInfo(data *Game, config *config.Config, nnum int) ([]Record, float64,
 		return rksList[i].Rks > rksList[j].Rks
 	})
 
-	var b19List []Record
-	for i := 0; i < nnum && i < len(rksList); i++ {
+	for i := 0; i < len(rksList); i++ {
 		if i < 19 {
 			comRks += rksList[i].Rks
 		}
 		rksList[i].Rks = math.Floor(rksList[i].Rks*100) / 100
 		rksList[i].Acc = math.Floor(rksList[i].Acc*100) / 100
-		b19List = append(b19List, rksList[i])
 	}
 
-	return b19List, comRks / float64(nnum+1), phi
+	return rksList, comRks / float64(20), phi
 }
 
 // 计算歌曲Rks

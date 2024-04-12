@@ -7,13 +7,19 @@ const routes = [
     children: [
       { path: "/", name: "home", component: () => import("@/views/home.vue") },
       { path: "b19", name: "b19", component: () => import("@/views/b19.vue") },
+      { path: "bn", name: "bn", component: () => import("@/views/bn.vue") },
       {
-        path: "/session",
+        path: "leaderboard",
+        name: "leaderboard",
+        component: () => import("@/views/leaderboard.vue"),
+      },
+      {
+        path: "session",
         name: "session",
         component: () => import("@/views/session.vue"),
       },
       {
-        path: "/history",
+        path: "history",
         name: "history",
         component: () => import("@/views/history.vue"),
       },
