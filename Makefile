@@ -8,7 +8,7 @@ FRONTBUILD=cd web && pnpm i && pnpm run build --outDir=../$(BINDIR)/dist --empty
 
 .PHONY: init web
 
-all: linux-amd64 windows-amd64 web
+all: linux-amd64 web
 
 web:
 	$(FRONTBUILD)
@@ -30,7 +30,7 @@ unpack:
 	(cd web/public/assets && rm -rf ./illustrations) &&\
 	(cd script && ./unpack.sh $(APK_NAME))
 
-deploy: linux-amd64 unpack web
+deploy:
 	docker-compose up -d
 
 clean:
