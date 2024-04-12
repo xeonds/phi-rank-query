@@ -47,13 +47,6 @@ func AddStatic(router *gin.Engine, staticFileDir []string) {
 func AddStaticFS(router *gin.Engine, fs embed.FS) {
 	router.NoRoute(gin.WrapH(http.FileServer(http.FS(fs))))
 }
-func AddLoginAPI(router gin.IRouter, path string, db *gorm.DB) *gin.RouterGroup {
-	return APIBuilder(router, func(group *gin.RouterGroup) *gin.RouterGroup {
-		group.POST("/login", HandleLogin(db))
-		group.POST("/register", HandleRegister(db))
-		return group
-	})(router, path)
-}
 func AddCaptchaAPI(router gin.IRouter, path string, conf1 MailConfig, conf2 CaptchaConfig, rdb *redis.Client) *gin.RouterGroup {
 	return APIBuilder(router, func(group *gin.RouterGroup) *gin.RouterGroup {
 		group.POST("/gen_captcha", HandleMailSendCaptcha(conf1, conf2, rdb))
@@ -197,81 +190,5 @@ func HandleCaptchaVerify(rdb *redis.Client) func(*gin.Context) {
 				"message": "验证码错误",
 			})
 		}
-	}
-}
-
-// login service
-func HandleLogin(db *gorm.DB) func(*gin.Context) {
-	return func(c *gin.Context) {
-		input, user := new(User), new(User)
-		// user is already a pointer, so no need to use &user
-		if err := c.ShouldBindJSON(input); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		if err := db.Where("email = ?", input.Email).Find(user).Error; err != nil {
-			log.Println("Find user by email failed: ", err)
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "User does not exist"})
-			return
-		}
-		if err := CheckPasswordHash(input.Password, user.Password); err != nil {
-			log.Println("Incorrect password: ", err)
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Incorrect password"})
-			return
-		}
-		token, err := GenerateToken(&UserClaim{
-			Name:       user.Username,
-			ID:         int(user.ID),
-			Expire:     time.Now().Add(time.Hour * 24),
-			Permission: int(user.Permission),
-		})
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"token": token})
-	}
-}
-func HandleRegister(db *gorm.DB) func(*gin.Context) {
-	return func(c *gin.Context) {
-		user := new(User)
-		var count int64
-		if err := c.ShouldBindJSON(user); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		if err := db.Where("username = ?", user.Username).Find(new(User)).Count(&count).Error; count != 0 {
-			log.Println("Username already exists: ", err)
-			c.JSON(http.StatusBadRequest, gin.H{"error": "username already exists"})
-			return
-		}
-		user.Password = HashedPassword(user.Password)
-		if err := db.Create(user).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create user"})
-			return
-		}
-		// TODO: fix bug of user & related account info creation
-		if user.ID == 1 { // if it is the first user, set it as admin
-			user.Permission = 0
-			if err := db.Save(user).Error; err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to update user"})
-				return
-			}
-		}
-		c.JSON(http.StatusOK, gin.H{"message": "user created successfully"})
-	}
-}
-
-func RefreshToken(db *gorm.DB) func(*gin.Context) {
-	return func(c *gin.Context) {
-		token := c.GetHeader("Authorization") // Authed by JWTMiddleware, so the token is valid
-		claim, _ := ParseToken(token)
-		claim.Expire = time.Now().Add(time.Hour * 24)
-		token, err := GenerateToken(claim)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
-			return
-		}
-		c.JSON(http.StatusOK, gin.H{"token": token})
 	}
 }
