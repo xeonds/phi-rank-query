@@ -61,8 +61,7 @@ func GetB19(config *config.Config, db *gorm.DB) func(c *gin.Context) {
 		}
 		game := service.DecryptSaveZip(saveZip)
 		bn, rks, phi := service.CalcBNInfo(game, config)
-
-		db.Where("session_token = ?", post.Session).FirstOrCreate(&model.User{
+		service.UpdateRank(db, &model.User{
 			SessionToken: post.Session,
 			Username:     accountInfo.Nickname,
 			Rks:          rks,
@@ -112,6 +111,11 @@ func GetBN(config *config.Config, db *gorm.DB) func(c *gin.Context) {
 		}
 		game := service.DecryptSaveZip(saveZip)
 		bn, rks, phi := service.CalcBNInfo(game, config)
+		service.UpdateRank(db, &model.User{
+			SessionToken: post.Session,
+			Username:     accountInfo.Nickname,
+			Rks:          rks,
+		})
 		db.Where("session_token = ?", post.Session).FirstOrCreate(&model.User{
 			SessionToken: post.Session,
 			Username:     accountInfo.Nickname,
