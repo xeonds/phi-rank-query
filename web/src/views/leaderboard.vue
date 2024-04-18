@@ -1,19 +1,19 @@
 <template>
     <div>
-        <h1 class="text-2xl font-bold mb-4 text-gray-400">Leaderboard</h1>
+        <h1 class="text-2xl font-bold mb-4 text-gray-400">排行榜</h1>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Ranking</th>
-                    <th>Username</th>
-                    <th>Rks</th>
+                    <th class="border-b px-4 py-4">排行</th>
+                    <th class="border-b px-4 py-4">User ID</th>
+                    <th class="border-b px-4 py-4">Rks</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(player, index) in leaderboardData" :key="player.id">
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ player.username }}</td>
-                    <td>{{ player.rks.toFixed(4) }}</td>
+                    <td class="border-b px-4 py-4">{{ index + 1 }}</td>
+                    <td class="border-b px-4 py-4">{{ player.username }}</td>
+                    <td class="border-b px-4 py-4">{{ player.rks.toFixed(4) }}</td>
                 </tr>
             </tbody>
         </table>

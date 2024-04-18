@@ -1,15 +1,15 @@
 <template>
     <div class="p-4">
-        <h1 class="text-2xl font-bold mb-4 text-gray-400">History</h1>
+        <h1 class="text-2xl font-bold mb-4 text-gray-400">查询历史</h1>
         <div class="flex items-center mb-4">
             <button @click="exportHistory" class="px-4 py-2 text-white btn btn-outline btn-primary">
-                Export History
+                导出历史
             </button>
         </div>
         <table class="table w-full border-collapse text-gray-400">
             <thead>
                 <tr>
-                    <th class="py-2 px-4 border-b text-gray-400">Score</th>
+                    <th class="py-2 px-4 border-b text-gray-400">记录</th>
                 </tr>
             </thead>
             <tbody>

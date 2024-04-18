@@ -9,17 +9,17 @@
         </div>
       </div>
       <div class="r">
-        <p>Player: {{ PlayerId }}</p>
-        <p>RankingScore: {{ Rks }}</p>
+        <p>玩家: {{ PlayerId }}</p>
+        <p>Rks: {{ Rks }}</p>
         <div class="Challenge">
-          <p>ChallengeMode:</p>
+          <p>课题模式: </p>
           <div class="Challenge-r">
             <img :src="'/assets/' + ChallengeMode + '.png'" alt="Challenge">
             <p>{{ ChallengeModeRank }}</p>
           </div>
         </div>
         <p v-if="data">Data: {{ data }}</p>
-        <p>Date: {{ lastDate }}</p>
+        <p>同步时间: {{ lastDate }}</p>
       </div>
     </div>
     <div class="b19">
