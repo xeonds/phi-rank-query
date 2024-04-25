@@ -1,6 +1,6 @@
 <template>
     <div class="container mx-auto py-4">
-        <h1 class="text-2xl font-bold mb-4">Rank Query Page</h1>
+        <h1 class="text-2xl font-bold mb-4 text-gray-400">Rank Query Page</h1>
         <div v-if="isLoading" class="text-center">
             <p>咕咕咕...正在加载</p>
         </div>
@@ -8,16 +8,16 @@
             <table class="table border-collapse table-auto w-full">
                 <thead>
                     <tr>
-                        <th class="px-4 border-b py-2">名称</th>
-                        <th class="px-4 border-b py-2">难度</th>
-                        <th class="px-4 border-b py-2">定数</th>
+                        <th class="px-4 border-b py-2 text-gray-400">名称</th>
+                        <th class="px-4 border-b py-2 text-gray-400">难度</th>
+                        <th class="px-4 border-b py-2 text-gray-400">定数</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(item, index) in rankTable" :key="index">
-                        <td class="border-b px-4 py-2">{{ item.title }}</td>
-                        <td class="border-b px-4 py-2">{{ item.difficulty }}</td>
-                        <td class="border-b px-4 py-2">{{ item.rank }}</td>
+                        <td class="border-b px-4 py-2 text-gray-400">{{ item.title }}</td>
+                        <td class="border-b px-4 py-2 text-gray-400">{{ item.difficulty }}</td>
+                        <td class="border-b px-4 py-2 text-gray-400">{{ item.rank }}</td>
                     </tr>
                 </tbody>
             </table>
