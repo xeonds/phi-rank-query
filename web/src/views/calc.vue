@@ -5,7 +5,7 @@
             <el-button class="px-4 py-2 text-white btn btn-outline btn-primary"
                 @click="editVisible = true">编辑b19</el-button>
             <span class="mx-4"></span>
-            <button class="px-4 py-2 text-white btn btn-outline btn-primary" @click="editVisible = false">开算！</button>
+            <button class="px-4 py-2 text-white btn btn-outline btn-primary" @click="calc">开算！</button>
         </div>
         <div v-if="!editVisible" class="flex flex-row justify-around">
             <div class="flex flex-col px-8">
@@ -59,6 +59,20 @@ watch(() => b19,
     },
     { deep: true }
 )
+
+const calc = async () => {
+    const response = await fetch('/api/v1/calc', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            b19: b19.value
+        })
+    });
+    const data = response.json();
+    console.log(data);
+}
 
 onMounted(async () => {
     const response = await fetch('/api/v1/rank_table');
