@@ -25,7 +25,7 @@
     <div class="b19">
       <div class="L">
         <!-- phi -->
-        <Song :index="'phi'" :song="phi" v-if="phi.song" />
+        <SongItem :index="'phi'" :song="phi" v-if="phi.song" />
         <div v-else class="Nosignal">
           <div class="border_corner border_corner_left_top"></div>
           <div class="border_corner border_corner_right_top"></div>
@@ -42,13 +42,13 @@
         </div>
 
         <template v-for="(song, index) in b19_list" :key="song.num">
-          <Song :index="'#' + (index + 1).toString()" :song="song" v-if="index % 2 === 1" />
+          <SongItem :index="'#' + (index + 1).toString()" :song="song" v-if="index % 2 === 1" />
         </template>
 
       </div>
       <div class="R">
         <template v-for="(song, index) in b19_list" :key="song.num">
-          <Song :index="'#' + (index + 1).toString()" :song="song" v-if="index % 2 === 0" />
+          <SongItem :index="'#' + (index + 1).toString()" :song="song" v-if="index % 2 === 0" />
         </template>
       </div>
     </div>
@@ -57,20 +57,9 @@
 
 <script setup lang="ts">
 import { Ref, onMounted, ref } from 'vue';
-import Song from '@/components/song.vue';
-
-interface Song {
-  num: number;
-  song: string;
-  illustration: string;
-  rank: string;
-  difficulty: string;
-  rks: string;
-  Rating: string;
-  score: string;
-  acc: string;
-  suggest: string;
-}
+import SongItem from '@/components/song.vue';
+import { Song } from '@/common';
+import { getRating } from '@/common';
 
 const PlayerId = ref('');
 const Rks = ref('');
@@ -78,17 +67,7 @@ const ChallengeMode = ref('');
 const ChallengeModeRank = ref('');
 const data = ref('');
 const lastDate = ref('');
-const phi = ref({
-  song: '',
-  illustration: '',
-  rank: '',
-  difficulty: '',
-  rks: '',
-  Rating: '',
-  score: '',
-  acc: '',
-  suggest: ''
-});
+const phi: Ref<Song> = ref({} as Song);
 const b19_list: Ref<Song[]> = ref([] as Song[]);
 const sessionToken = ref('');
 
@@ -135,28 +114,18 @@ const fetchData = async (sessionToken: string) => {
     return { data, err };
   }
 }
-const getRating = (fc: boolean, score: number) => {
-  if (score >= 1000000) return 'phi';
-  if (fc) return 'FC';
-  if (score >= 960000) return 'V';
-  if (score >= 920000) return 'S';
-  if (score >= 880000) return 'A';
-  if (score >= 820000) return 'B';
-  if (score >= 700000) return 'C';
-  return 'F';
-}
-const getHiBit = (num: number) => {
-  while (num > 10) {
-    num = num / 10;
-  }
-  return num;
-}
-const getSubBit = (num: number) => {
-  if (num >= 100) return num % 100;
-  else if (num >= 10) return num % 10;
-  else return num;
-}
 const parseData = (data: any) => {
+  const getHiBit = (num: number) => {
+    while (num > 10) {
+      num = num / 10;
+    }
+    return num;
+  }
+  const getSubBit = (num: number) => {
+    if (num >= 100) return num % 100;
+    else if (num >= 10) return num % 10;
+    else return num;
+  }
   PlayerId.value = data.player || '';
   ChallengeMode.value = getHiBit(data.challenge).toFixed(0).toString() || '';
   ChallengeModeRank.value = getSubBit(data.challenge).toString() || '';

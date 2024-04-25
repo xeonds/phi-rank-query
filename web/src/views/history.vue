@@ -43,8 +43,8 @@
         <p>Player: {{ selectedScore.player }}</p>
         <p>RankingScore: {{ selectedScore.rks }}</p>
         <div class="flex flex-row flex-wrap">
-            <song :index="'#phi'" :song="parseSong(selectedScore.phi)" class="mx-4"/>
-            <song v-for="(song, index) in parseSongList(selectedScore.b19)" :key="index"
+            <SongItem :index="'#phi'" :song="parseSong(selectedScore.phi)" class="mx-4"/>
+            <SongItem v-for="(song, index) in parseSongList(selectedScore.b19)" :key="index"
                 :index="'#' + (index + 1).toString()" :song="song" class="mx-4"/>
         </div>
     </div>
@@ -52,8 +52,8 @@
 
 <script lang="ts" setup>
 import { Ref, onMounted, ref } from 'vue';
-import song from '@/components/song.vue';
-import { parseSongList, parseSong } from '@/common';
+import SongItem from '@/components/song.vue';
+import { parseSongList, parseSong } from '@/common.ts';
 
 const historyScores: Ref<any[]> = ref([])
 const sessionToken = ref<string>('');

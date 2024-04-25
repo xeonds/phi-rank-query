@@ -10,30 +10,28 @@
         <div v-if="!editVisible" class="flex flex-row justify-around">
             <div class="flex flex-col px-8">
                 <template v-for="(_, index) in rankTable">
-                    <Song v-if="index % 2 == 0" :index="`#${index}`" :song="rankTable[index]" />
+                    <SongItem v-if="index % 2 == 0" :index="`#${index}`" :song="rankTable[index]" />
                 </template>
             </div>
             <div class="flex flex-col px-8">
                 <template v-for="(_, index) in rankTable">
-                    <Song v-if="index % 2 == 1" :index="`#${index}`" :song="rankTable[index]" />
+                    <SongItem v-if="index % 2 == 1" :index="`#${index}`" :song="rankTable[index]" />
                 </template>
             </div>
         </div>
-        <div v-else>
-            <form>
-                <label for="当前项目"></label>
-                <input :model="curr" />
-                <label for="输入项1"></label>
-                <input :model="curr" />
-                <label for="输入项2"></label>
-                <input :model="curr" />
-            </form>
+        <div v-else class="flex items-center mb-4">
+            <input type="text" v-model="curr" placeholder="选择id"
+                class="input input-ghost input-bordered w-full max-w-xs mr-2 p-2 border border-gray-800 rounded" />
+            <input type="text" v-model="rankTable[curr].difficulty" placeholder="输入歌曲定数"
+                class="input input-ghost input-bordered w-full max-w-xs mr-2 p-2 border border-gray-800 rounded" />
+            <input type="text" v-model="rankTable[curr].acc" placeholder="输入歌曲准度"
+                class="input input-ghost input-bordered w-full max-w-xs mr-2 p-2 border border-gray-800 rounded" />
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import Song from '@/components/song.vue';
+import SongItem from '@/components/song.vue';
 import { Ref, onMounted, ref } from 'vue';
 
 interface RankTableItem {
