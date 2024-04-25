@@ -27,12 +27,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, Ref } from 'vue';
-
-interface RankTableItem {
-    title: string;
-    difficulty: string;
-    rank: number;
-}
+import { RankTableItem } from '@/common';
 
 const rankTable: Ref<RankTableItem[]> = ref([]);
 const isLoading = ref(true);

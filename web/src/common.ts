@@ -11,6 +11,22 @@ export interface Song {
   suggest: string;
 }
 
+export interface RankTableItem {
+    title: string;
+    difficulty: string;
+    rank: number;
+}
+
+export interface RankTableItemShrink {
+    title: string;
+    difficulty: {
+      EZ: number;
+      HD: number;
+      IN: number;
+      AT?: number;
+    }
+}
+
 export const getRating = (fc: boolean, score: number) => {
   if (score >= 1000000) return "phi";
   if (fc) return "FC";
