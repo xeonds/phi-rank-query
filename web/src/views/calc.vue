@@ -32,7 +32,7 @@
                 placeholder="选择难度">
                 <option v-for="item in songDifficulties" :value="item">{{ item }}</option>
             </select>
-            <input type="text" v-model="b19[curr].acc" placeholder="输入准度" class="input input-ghost input-bordered" />
+            <input type="number" v-model="b19[curr].acc" placeholder="输入准度" class="input input-ghost input-bordered" />
         </div>
     </div>
 </template>
@@ -71,7 +71,7 @@ const calc = async () => {
         })
     });
     const data = response.json();
-    console.log(data);
+    editVisible.value = false;
 }
 
 onMounted(async () => {
