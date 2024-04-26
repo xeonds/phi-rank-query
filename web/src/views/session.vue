@@ -59,7 +59,7 @@ const loadSessions = () => {
     aliases.value = JSON.parse(localStorage.getItem('aliases') || '[]');
 };
 const loadSelectedSession = () => {
-    const savedSelectedSession = sessionStorage.getItem('selectedSession');
+    const savedSelectedSession = localStorage.getItem('selectedSession');
     if (savedSelectedSession) selectedSession.value = savedSelectedSession;
 };
 const addSession = () => {
@@ -89,7 +89,7 @@ watch(
     selectedSession,
     () => {
         if (selectedSession.value)
-            sessionStorage.setItem('selectedSession', selectedSession.value);
+            localStorage.setItem('selectedSession', selectedSession.value);
     },
     { immediate: true }
 );

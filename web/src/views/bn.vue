@@ -72,7 +72,7 @@ const b19_list: Ref<Song[]> = ref([] as Song[]);
 const sessionToken = ref('');
 
 const askForSessionToken = () => {
-  var token = sessionStorage.getItem('selectedSession');
+  var token = localStorage.getItem('selectedSession');
   if (!token) {
     return false;
   } else {

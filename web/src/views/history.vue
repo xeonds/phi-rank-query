@@ -90,7 +90,7 @@ const importHistory = () => {
     input.click();
 }
 const askForSessionToken = () => {
-    var token = sessionStorage.getItem('selectedSession');
+    var token = localStorage.getItem('selectedSession');
     if (!token) {
         return false;
     } else {
