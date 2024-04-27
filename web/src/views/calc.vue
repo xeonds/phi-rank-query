@@ -59,6 +59,7 @@ const rankTable: Ref<RankTableItem[]> = ref([]);
 const b19: Ref<Song[]> = ref([]);
 
 const calc = (b19: Song[]) => {
+    if (b19.length == 0) { return { b19: [], b0: {}, rks: 0 } }
     const getTitle = (id?: string) => { return id ? (rankTable.value.filter(e => e.id == id))[0].title : '' }
     const getDifficulty = (id?: string) => { return id ? (rankTable.value.filter(e => e.id == id))[0].difficulty : [] as any }
     b19 = b19.map(item => ({
