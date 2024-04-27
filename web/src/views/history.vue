@@ -41,7 +41,7 @@
     </div>
     <div v-else>
         <p>Player: {{ selectedScore.player }}</p>
-        <p>RankingScore: {{ selectedScore.rks }}</p>
+        <p>RankingScore: {{ selectedScore.rks.toFixed(4) }}</p>
         <div class="flex flex-row flex-wrap">
             <SongItem :index="'#phi'" :song="parseSong(selectedScore.phi)" class="mx-4"/>
             <SongItem v-for="(song, index) in parseSongList(selectedScore.b19)" :key="index"

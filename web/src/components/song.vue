@@ -6,45 +6,57 @@ const props = defineProps({
     },
     song: {
         type: Object,
-        default: () => ({})
+        default: {
+        }
     }
 });
+const index = props.index ?? '#?';
+const data = props.song ?? {
+    illustration: '',
+    rank: '??',
+    difficulty: '??',
+    rks: '??',
+    song: '??',
+    Rating: '??',
+    score: '??',
+    acc: '??',
+}
 </script>
 
 <template>
     <div class="song">
         <div class="ill-box">
             <div class="num">
-                <p name="pvis">{{ props.index }}</p>
+                <p name="pvis">{{ index }}</p>
             </div>
             <div class="ill">
-                <img :src="props.song.illustration" alt="ill">
+                <img :src="data.illustration" alt="ill">
             </div>
-            <div :class="`rank-${props.song.rank}`">
+            <div :class="`rank-${data.rank}`">
                 <div class="org">
-                    <p>{{ props.song.rank }}&ensp;{{ props.song.difficulty }}</p>
+                    <p>{{ data.rank }}&ensp;{{ data.difficulty }}</p>
                 </div>
                 <div class="rel">
-                    <p>{{ props.song.rks }}</p>
+                    <p>{{ data.rks }}</p>
                 </div>
             </div>
         </div>
         <div class="info">
             <div class="songname">
-                <p name="pvis">{{ props.song.song }}</p>
+                <p name="pvis">{{ data.song }}</p>
             </div>
             <div class="songinfo">
                 <div class="Rating">
-                    <img :src="'/assets/' + props.song.Rating + '.png'" alt="Rating">
+                    <img :src="'/assets/' + data.Rating + '.png'" alt="Rating">
                 </div>
                 <div class="chengji">
                     <div class="score">
-                        <p>{{ props.song.score }}</p>
+                        <p>{{ data.score }}</p>
                     </div>
                     <div class="line"></div>
                     <div class="acc-box">
                         <div class="acc">
-                            <p>{{ props.song.acc }}%</p>
+                            <p>{{ data.acc }}%</p>
                         </div>
                     </div>
                 </div>
