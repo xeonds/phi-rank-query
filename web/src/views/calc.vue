@@ -25,7 +25,7 @@
             <select class="select select-ghost select-bordered w-full max-w-xs text-white" v-model="item.id" placeholder="选择歌曲id">
                 <option v-for="song in rankTable" :value="song.id">{{ song.title }}</option>
             </select>
-            <select class="select select-ghost select-bordered w-full max-w-xs text-white" v-model="item.difficulty"
+            <select class="select select-ghost select-bordered w-full max-w-xs text-white" v-model="item.rank"
                 placeholder="选择难度">
                 <template
                     v-for="difficulty, rank in item.id ? rankTable.filter(e => e.id == item.id!)[0].difficulty : []">
@@ -65,11 +65,11 @@ const calc = (b19: Song[]) => {
     b19 = b19.map(item => ({
         id: item.id,
         song: getTitle(item.id),
-        difficulty: getDifficulty(item.id)[item.difficulty],
+        difficulty: getDifficulty(item.id)[item.rank],
         acc: item.acc,
         score: item.score,
-        rank: item.difficulty,
-        rks: calcSongRks(parseFloat(item.acc), parseFloat(getDifficulty(item.id)[item.difficulty])).toString(),
+        rank: item.rank,
+        rks: calcSongRks(parseFloat(item.acc), parseFloat(getDifficulty(item.id)[item.rank])).toString(),
         Rating: getRating(false, parseInt(item.score)),
         illustration: `/assets/illustrations/${item.id}.png`,
     } as Song))
@@ -83,6 +83,7 @@ const calc = (b19: Song[]) => {
 }
 
 const calcSongRks = (acc: number, rank: number) => {
+    console.log(acc, rank)
     if (acc == 100) { return rank }
     else if (acc < 70) { return 0 }
     else { return rank * (((acc - 55) / 45) * ((acc - 55) / 45)) }
