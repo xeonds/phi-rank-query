@@ -22,18 +22,18 @@
             <button @click="b19.pop()" class="btn btn-outline btn-primary"> - </button>
         </div>
         <div v-for="item in b19" class="flex flex-row *:mx-2 *:my-2 w-full">
-            <select class="select select-ghost select-bordered w-full max-w-xs" v-model="item.id" placeholder="选择歌曲id">
+            <select class="select select-ghost select-bordered w-full max-w-xs text-white" v-model="item.id" placeholder="选择歌曲id">
                 <option v-for="song in rankTable" :value="song.id">{{ song.title }}</option>
             </select>
-            <select class="select select-ghost select-bordered w-full max-w-xs" v-model="item.difficulty"
+            <select class="select select-ghost select-bordered w-full max-w-xs text-white" v-model="item.difficulty"
                 placeholder="选择难度">
                 <template
                     v-for="difficulty, rank in item.id ? rankTable.filter(e => e.id == item.id!)[0].difficulty : []">
                     <option v-if="difficulty" :value="rank">{{ rank }}</option>
                 </template>
             </select>
-            <input type="number" v-model="item.acc" placeholder="输入准度" class="input input-ghost input-bordered" />
-            <input type="number" v-model="item.score" placeholder="输入成绩" class="input input-ghost input-bordered" />
+            <input type="number" v-model="item.acc" placeholder="输入准度" class="input input-ghost input-bordered text-white" />
+            <input type="number" v-model="item.score" placeholder="输入成绩" class="input input-ghost input-bordered text-white" />
         </div>
     </div>
 </template>
