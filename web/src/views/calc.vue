@@ -67,6 +67,7 @@ const calc = (b19: Song[]) => {
         song: getTitle(item.id),
         difficulty: getDifficulty(item.id)[item.difficulty],
         acc: item.acc,
+        score: item.score,
         rank: item.difficulty,
         rks: calcSongRks(parseFloat(item.acc), parseFloat(getDifficulty(item.id)[item.difficulty])).toString(),
         Rating: getRating(false, parseInt(item.score)),

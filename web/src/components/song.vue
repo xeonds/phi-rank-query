@@ -34,10 +34,10 @@ const data = props.song ?? {
             </div>
             <div :class="`rank-${data.rank}`">
                 <div class="org">
-                    <p>{{ data.rank }}&ensp;{{ data.difficulty }}</p>
+                    <p>{{ data.rank }}&ensp;{{ parseFloat(data.difficulty).toFixed(1) }}</p>
                 </div>
                 <div class="rel">
-                    <p>{{ data.rks }}</p>
+                    <p>{{ parseFloat(data.rks).toFixed(2) }}</p>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@ const data = props.song ?? {
                     <div class="line"></div>
                     <div class="acc-box">
                         <div class="acc">
-                            <p>{{ data.acc }}%</p>
+                            <p>{{ parseFloat(data.acc).toFixed(2) }}%</p>
                         </div>
                     </div>
                 </div>
