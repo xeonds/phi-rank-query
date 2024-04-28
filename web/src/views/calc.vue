@@ -1,10 +1,10 @@
 <template>
     <h1 class="text-2xl font-bold mb-4 text-gray-400">Rks手动计算</h1>
-    <div class="flex items-center mb-4">
-        <el-button class="px-4 py-2 text-white btn btn-outline btn-primary"
-            @click="editVisible = true">编辑b19</el-button>
-        <span class="mx-4"></span>
+    <div class="flex items-center mb-4 *:mx-2">
+        <button class="px-4 py-2 text-white btn btn-outline btn-primary" @click="editVisible = true">编辑b19</button>
         <button class="px-4 py-2 text-white btn btn-outline btn-primary" @click="editVisible = false">开算！</button>
+        <button class="px-4 py-2 text-white btn btn-outline btn-primary" @click="importHistory">导入</button>
+        <button class="px-4 py-2 text-white btn btn-outline btn-primary" @click="exportHistory">导出</button>
     </div>
     <div v-if="!editVisible" class="flex flex-col justify-around w-full">
         <p>Player: OFFLINE</p>
@@ -87,6 +87,35 @@ const calcSongRks = (acc: number, rank: number) => {
     if (acc == 100) { return rank }
     else if (acc < 70) { return 0 }
     else { return rank * (((acc - 55) / 45) * ((acc - 55) / 45)) }
+}
+
+const exportHistory = () => {
+    const data = JSON.stringify({ data: b19.value });
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'calc.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+const importHistory = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (!file) {
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const data = JSON.parse(e.target?.result as string);
+            b19.value = data.data;
+        }
+        reader.readAsText(file);
+    }
+    input.click();
 }
 
 onMounted(async () => {
