@@ -9,6 +9,7 @@ const routes = [
       { path: "info", name: "info", component: () => import("@/views/info.vue") },
       { path: "b19", name: "b19", component: () => import("@/views/b19.vue") },
       { path: "bn", name: "bn", component: () => import("@/views/bn.vue") },
+      { path: "calc", name: "calc", component: () => import("@/views/calc.vue") },
       {
         path: "leaderboard",
         name: "leaderboard",

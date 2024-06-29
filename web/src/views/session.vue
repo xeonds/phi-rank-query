@@ -2,23 +2,23 @@
     <div class="p-4">
         <h1 class="text-2xl font-bold mb-4 text-gray-400">Sessions</h1>
         <div class="flex items-center mb-4">
-            <input type="text" v-model="newSession" placeholder="Enter a session"
+            <input type="text" v-model="newSession" placeholder="输入一个Session..."
                 class="input input-ghost input-bordered w-full max-w-xs mr-2 p-2 border border-gray-800 rounded" />
-            <input type="text" v-model="newAlias" placeholder="Enter alias"
+            <input type="text" v-model="newAlias" placeholder="输入别名..."
                 class="input input-ghost input-bordered w-full max-w-xs mr-2 p-2 border border-gray-800 rounded" />
             <button @click="addSession" class="px-4 py-2 text-white btn btn-outline btn-primary">
-                Add Session
+                添加 Session
             </button>
         </div>
         <div v-if="sessions.length === 0" class="text-gray-500">
-            No sessions added yet.
+            咕，还没有添加任何 Session 哦
         </div>
         <table class="table border-collapse text-gray-400" v-else>
             <thead>
                 <tr>
                     <th class="py-2 px-4 border-b text-gray-400">Session</th>
-                    <th class="py-2 px-4 border-b text-gray-400">Alias</th>
-                    <th class="py-2 px-4 border-b text-gray-400">Action</th>
+                    <th class="py-2 px-4 border-b text-gray-400">别名</th>
+                    <th class="py-2 px-4 border-b text-gray-400">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,7 +36,7 @@
                     </td>
                     <td class="py-2 px-4 border-b">
                         <button @click="deleteSession(index)" class="px-2 py-1 btn btn-outline btn-warning">
-                            Delete
+                            删 除 Session
                         </button>
                     </td>
                 </tr>
@@ -59,7 +59,7 @@ const loadSessions = () => {
     aliases.value = JSON.parse(localStorage.getItem('aliases') || '[]');
 };
 const loadSelectedSession = () => {
-    const savedSelectedSession = sessionStorage.getItem('selectedSession');
+    const savedSelectedSession = localStorage.getItem('selectedSession');
     if (savedSelectedSession) selectedSession.value = savedSelectedSession;
 };
 const addSession = () => {
@@ -89,7 +89,7 @@ watch(
     selectedSession,
     () => {
         if (selectedSession.value)
-            sessionStorage.setItem('selectedSession', selectedSession.value);
+            localStorage.setItem('selectedSession', selectedSession.value);
     },
     { immediate: true }
 );

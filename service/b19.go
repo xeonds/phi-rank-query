@@ -204,9 +204,10 @@ func CalcBNInfo(data *model.Game, config *config.Config) ([]model.Record, float6
 			if tem == nil {
 				continue
 			}
+			diff, _ := strconv.ParseFloat(difficulty[titleTrim][difficulty_map[level]], 64)
 			songRank := model.Record{
 				Id:           titleTrim,
-				Rks:          CalcSongRank(tem.Acc, difficulty[titleTrim][difficulty_map[level]]),
+				Rks:          CalcSongRank(tem.Acc, diff),
 				Score:        tem.Score,
 				Difficulty:   difficulty[titleTrim][difficulty_map[level]],
 				Level:        difficulty_map[level],
@@ -261,14 +262,13 @@ func CalcBNInfo(data *model.Game, config *config.Config) ([]model.Record, float6
 }
 
 // 计算歌曲Rks
-func CalcSongRank(acc float32, rank string) float64 {
-	rankValue, _ := strconv.ParseFloat(rank, 64)
+func CalcSongRank(acc float32, rank float64) float64 {
 	if acc == 100 {
-		return float64(rankValue)
+		return float64(rank)
 	} else if acc < 70 {
 		return 0
 	} else {
-		return rankValue * (((float64(acc) - 55) / 45) * ((float64(acc) - 55) / 45))
+		return rank * (((float64(acc) - 55) / 45) * ((float64(acc) - 55) / 45))
 	}
 }
 

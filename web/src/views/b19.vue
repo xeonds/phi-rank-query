@@ -9,61 +9,23 @@
         </div>
       </div>
       <div class="r">
-        <p>Player: {{ PlayerId }}</p>
-        <p>RankingScore: {{ Rks }}</p>
+        <p>玩家: {{ PlayerId }}</p>
+        <p>Rks: {{ Rks }}</p>
         <div class="Challenge">
-          <p>ChallengeMode:</p>
+          <p>课题模式: </p>
           <div class="Challenge-r">
             <img :src="'/assets/' + ChallengeMode + '.png'" alt="Challenge">
             <p>{{ ChallengeModeRank }}</p>
           </div>
         </div>
         <p v-if="data">Data: {{ data }}</p>
-        <p>Date: {{ lastDate }}</p>
+        <p>同步时间: {{ lastDate }}</p>
       </div>
     </div>
     <div class="b19">
       <div class="L">
         <!-- phi -->
-        <div v-if="phi.song" class="song">
-          <div class="ill-box">
-            <div class="num">
-              <p>Phi</p>
-            </div>
-            <div class="ill">
-              <img :src="phi.illustration" alt="ill">
-            </div>
-            <div :class="`rank-${phi.rank}`">
-              <div class="org">
-                <p>{{ phi.rank }}&ensp;{{ phi.difficulty }}</p>
-              </div>
-              <div class="rel">
-                <p>{{ phi.rks }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="info">
-            <div class="songname">
-              <p name="pvis">{{ phi.song }}</p>
-            </div>
-            <div class="songinfo">
-              <div class="Rating">
-                <img :src="'/assets/' + phi.Rating + '.png'" alt="Rating">
-              </div>
-              <div class="chengji">
-                <div class="score">
-                  <p>{{ phi.score }}</p>
-                </div>
-                <div class="line"></div>
-                <div class="acc-box">
-                  <div class="acc">
-                    <p>{{ phi.acc }}%</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SongItem :song="phi" v-if="phi.song" :index="'#phi'" />
         <div v-else class="Nosignal">
           <div class="border_corner border_corner_left_top"></div>
           <div class="border_corner border_corner_right_top"></div>
@@ -80,89 +42,13 @@
         </div>
 
         <template v-for="(song, index) in b19_list" :key="song.num">
-          <div class="song" v-if="index % 2 === 1">
-            <div class="ill-box">
-              <div class="num">
-                <p name="pvis">#{{ index + 1 }}</p>
-              </div>
-              <div class="ill">
-                <img :src="song.illustration" alt="ill">
-              </div>
-              <div :class="`rank-${song.rank}`">
-                <div class="org">
-                  <p>{{ song.rank }}&ensp;{{ song.difficulty }}</p>
-                </div>
-                <div class="rel">
-                  <p>{{ song.rks }}</p>
-                </div>
-              </div>
-            </div>
-            <div class="info">
-              <div class="songname">
-                <p name="pvis">{{ song.song }}</p>
-              </div>
-              <div class="songinfo">
-                <div class="Rating">
-                  <img :src="'/assets/' + song.Rating + '.png'" alt="Rating">
-                </div>
-                <div class="chengji">
-                  <div class="score">
-                    <p>{{ song.score }}</p>
-                  </div>
-                  <div class="line"></div>
-                  <div class="acc-box">
-                    <div class="acc">
-                      <p>{{ song.acc }}%</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SongItem :song="song" v-if="index % 2 === 1" :index="'#' + (index + 1)" />
         </template>
 
       </div>
       <div class="R">
         <template v-for="(song, index) in b19_list" :key="song.num">
-          <div class="song" v-if="index % 2 === 0">
-            <div class="ill-box">
-              <div class="num">
-                <p name="pvis">#{{ index + 1 }}</p>
-              </div>
-              <div class="ill">
-                <img :src="song.illustration" alt="ill">
-              </div>
-              <div :class="`rank-${song.rank}`">
-                <div class="org">
-                  <p>{{ song.rank }}&ensp;{{ song.difficulty }}</p>
-                </div>
-                <div class="rel">
-                  <p>{{ song.rks }}</p>
-                </div>
-              </div>
-            </div>
-            <div class="info">
-              <div class="songname">
-                <p name="pvis">{{ song.song }}</p>
-              </div>
-              <div class="songinfo">
-                <div class="Rating">
-                  <img :src="'/assets/' + song.Rating + '.png'" alt="Rating">
-                </div>
-                <div class="chengji">
-                  <div class="score">
-                    <p>{{ song.score }}</p>
-                  </div>
-                  <div class="line"></div>
-                  <div class="acc-box">
-                    <div class="acc">
-                      <p>{{ song.acc }}%</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SongItem :song="song" v-if="index % 2 === 0" :index="'#' + (index + 1)" />
         </template>
       </div>
     </div>
@@ -171,19 +57,8 @@
 
 <script setup lang="ts">
 import { Ref, onMounted, ref } from 'vue';
-
-interface Song {
-  num: number;
-  song: string;
-  illustration: string;
-  rank: string;
-  difficulty: string;
-  rks: string;
-  Rating: string;
-  score: string;
-  acc: string;
-  suggest: string;
-}
+import SongItem from '@/components/song.vue';
+import { Song } from '@/common';
 
 const PlayerId = ref('');
 const Rks = ref('');
@@ -206,7 +81,7 @@ const b19_list: Ref<Song[]> = ref([] as Song[]);
 const sessionToken = ref('');
 
 const askForSessionToken = () => {
-  var token = sessionStorage.getItem('selectedSession');
+  var token = localStorage.getItem('selectedSession');
   if (!token) {
     return false;
   } else {
@@ -215,7 +90,7 @@ const askForSessionToken = () => {
   }
 }
 const fetchData = async (sessionToken: string) => {
-  const cacheKey = 'history-'+sessionToken;
+  const cacheKey = 'history-' + sessionToken;
   const cacheTimeout = 60000; // 1 minute in milliseconds
 
   const currentTime = Date.now();
