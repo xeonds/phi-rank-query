@@ -2,7 +2,7 @@ NAME=phi-rank-query
 BINDIR=build
 VERSION=1.0.0
 BUILDTIME=$(shell date -u)
-APK_NAME="../build/Phigros.apk"
+APK_NAME="../build/base.apk"
 GOBUILD=go mod tidy && go build -ldflags '-s -w -X "main.version=$(VERSION)" -X "main.buildTime=$(BUILDTIME)"'
 FRONTBUILD=cd web && pnpm i && pnpm run build --outDir=../$(BINDIR)/dist --emptyOutDir
 

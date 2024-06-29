@@ -1,4 +1,4 @@
-## phi-service
+## phi-rank-query
 
 Phigros score lookup service implemented using Go and Vue. Special thanks to the following projects:
 
