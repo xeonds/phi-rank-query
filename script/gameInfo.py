@@ -7,7 +7,7 @@ import csv
 SONG_BASE_SCHEMA = {
     "songId": str, "songKey": str, "songName": str, "songTitle": str, "difficulty": [float],
     "illustrator": str, "charter": [str], "composer": str, "levels": [str], "previewTimeFrom": float, "previewTimeTo": float,
-    "unlockList": {"unlockType": int, "unlockInfo": [str]}, "levelMods": {"n": [str]}
+    "unlockList": {"unlockType": int, "unlockInfo": [str]}, "isCnLimited":int, "levelMods": {"n": [str]}
 }
 
 class ByteReader:
