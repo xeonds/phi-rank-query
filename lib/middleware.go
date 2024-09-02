@@ -3,18 +3,23 @@ package lib
 import (
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-// Gin中间件
-func Logger() gin.HandlerFunc {
+// 日志中间件，记录客户端IP，请求方法，请求路径，请求耗时，请求头的Aurhorization字段, 将日志保存在path/to/logFile.log中
+func LoggerMiddleware(logFile string) gin.HandlerFunc {
+	file, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+	logger := log.New(file, "", log.LstdFlags)
 	return func(c *gin.Context) {
-		t := time.Now()
+		start := time.Now()
 		c.Next()
-		latency := time.Since(t)
-		log.Print(latency)
+		logger.Printf("%s %s %s %s %s\n", c.ClientIP(), c.Request.Method, c.Request.URL.Path, time.Since(start), c.GetHeader("Authorization"))
 	}
 }
 

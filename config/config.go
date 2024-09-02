@@ -7,6 +7,7 @@ type Config struct {
 	Server struct {
 		Port               string `yaml:"port"`
 		InsecureSkipVerify bool   `yaml:"insecureSkipVerify"`
+		LogFile            string `yaml:"logFile"`
 	}
 	// 数据库配置
 	lib.DatabaseConfig
