@@ -35,6 +35,9 @@
                         <label :for="'alias-' + index" class="mr-2">{{ aliases[index] }}</label>
                     </td>
                     <td class="py-2 px-4 border-b">
+                        <button @click="copySession(index)" class="px-2 mr-2 py-1 btn btn-outline btn-info">
+                            复 制 Session
+                        </button>
                         <button @click="deleteSession(index)" class="px-2 py-1 btn btn-outline btn-warning">
                             删 除 Session
                         </button>
@@ -70,7 +73,12 @@ const addSession = () => {
         newAlias.value = '';
     }
 };
+const copySession = (index: number) => {
+    navigator.clipboard.writeText(sessions.value[index]);
+    alert('Session 已复制到剪贴板');
+};
 const deleteSession = (index: number) => {
+    if (!confirm('确定要删除这个 Session 吗？')) return;
     sessions.value.splice(index, 1);
     aliases.value.splice(index, 1);
 };
