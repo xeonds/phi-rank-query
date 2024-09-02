@@ -18,6 +18,7 @@ func main() {
 	})
 
 	router := gin.Default()
+	router.Use(lib.LoggerMiddleware(config.Server.LogFile))
 	api := router.Group("/api/v1")
 	api.POST("/b19", GetB19(config, db))
 	api.POST("/bn", GetBN(config, db))
