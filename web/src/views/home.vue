@@ -35,7 +35,7 @@
             <br>
             <p class="text-gray-300"> pps: 查询历史做好了</p>
             <br>
-            <p class="text-gray-300"> ppps: 定数数据库同步3.8.0版本了（</p>
+            <p class="text-gray-300"> ppps: 定数数据库同步3.8.1版本了（</p>
         </main>
         <footer class="py-4">
             <div class="container mx-auto px-4">
