@@ -24,6 +24,9 @@ func main() {
 	api.POST("/bn", GetBN(config, db))
 	api.GET("/leaderboard", GetLeaderboard(db))
 	api.GET("/rank_table", GetRankTable(config))
+	api.GET(("/version"), func(c *gin.Context) {
+		c.JSON(200, gin.H{"version": config.Data.Version})
+	})
 	lib.AddStatic(router, []string{"./dist"})
 	router.Run(config.Server.Port)
 }

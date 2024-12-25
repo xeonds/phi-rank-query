@@ -35,7 +35,7 @@
             <br>
             <p class="text-gray-300"> pps: 查询历史做好了</p>
             <br>
-            <p class="text-gray-300"> ppps: 定数数据库同步3.9.1版本了（</p>
+            <p class="text-gray-300"> ppps: 定数数据库同步{{ version }}版本了（</p>
         </main>
         <footer class="py-4">
             <div class="container mx-auto px-4">
@@ -44,3 +44,14 @@
         </footer>
     </div>
 </template>
+
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue';
+
+let version = ref('114514');
+onMounted(()=>{
+    fetch('/api/v1/version').then(res=>res.json()).then(data=>{
+        version = data.version;
+    })
+})
+</script>

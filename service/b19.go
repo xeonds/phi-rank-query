@@ -67,7 +67,6 @@ func GetB19Info(config *config.Config, session string) ([]byte, error) {
 	setHeader(req)
 	req.Header.Set("X-LC-Session", session)
 
-	log.Println(config.Server.InsecureSkipVerify)
 	// 修复因为不信任证书导致的无法访问
 	resp, err := (&http.Client{
 		Transport: &http.Transport{
@@ -204,16 +203,18 @@ func CalcBNInfo(data *model.Game, config *config.Config) ([]model.Record, float6
 			if tem == nil {
 				continue
 			}
-			diff, _ := strconv.ParseFloat(difficulty[titleTrim][difficulty_map[level]], 64)
+			// fix: difficulty数组访问下标错误导致定数数据获取失败的问题
+			// 原因：疑似difficulty.csv下标变换导致map访问异常
+			diff, _ := strconv.ParseFloat(difficulty[title][difficulty_map[level]], 64)
 			songRank := model.Record{
-				Id:           titleTrim,
+				Id:           title,
 				Rks:          CalcSongRank(tem.Acc, diff),
 				Score:        tem.Score,
-				Difficulty:   difficulty[titleTrim][difficulty_map[level]],
+				Difficulty:   difficulty[title][difficulty_map[level]],
 				Level:        difficulty_map[level],
 				Acc:          float64(tem.Acc),
 				FullCombo:    tem.Fc,
-				Song:         songInfo[titleTrim]["song"],
+				Song:         songInfo[title]["song"],
 				Illustration: getIllustration(titleTrim),
 			}
 			if tem.Acc >= 100 {
