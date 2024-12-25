@@ -157,6 +157,7 @@ func CheckPasswordHash(password, hash string) error {
 func LoadCSV(filePath string) (map[string]map[string]string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
+		log.Println("Failed to open file: ", err)
 		return nil, err
 	}
 	defer file.Close()
@@ -164,19 +165,21 @@ func LoadCSV(filePath string) (map[string]map[string]string, error) {
 	reader := csv.NewReader(file)
 	rows, err := reader.ReadAll()
 	if err != nil {
+		log.Println("Failed to read file: ", err)
 		return nil, err
 	}
 
 	headers := rows[0]
 	data := make(map[string]map[string]string, len(rows)-1)
 	for i := 1; i < len(rows); i++ {
-		row := rows[i]
-		id := row[0]
 		values := make(map[string]string)
-		for j := 1; j < len(row); j++ {
-			values[headers[j]] = row[j]
+		for j := 1; j < len(rows[0]); j++ {
+			values[headers[j]] = rows[i][j]
 		}
-		data[id] = values
+		// use first column as key
+		// may be error-prone but ok for this use case
+		// because in this case the first column is unique
+		data[rows[i][0]] = values
 	}
 	return data, nil
 }

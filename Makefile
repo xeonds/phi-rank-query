@@ -13,13 +13,13 @@ all: linux-amd64 web
 web:
 	$(FRONTBUILD)
 
-linux-amd64: 
+linux-amd64: ./*.go ./*/*.go
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -o ./$(BINDIR)/$(NAME)-$@
 
 windows-amd64: 
 	GOOS=windows GOARCH=amd64 $(GOBUILD) -o ./$(BINDIR)/$(NAME)-$@.exe
 
-run:
+run: linux-amd64
 	cd $(BINDIR) && ./$(NAME)-linux-amd64
 
 init:

@@ -15,5 +15,6 @@ type Config struct {
 	Data struct {
 		Difficulty string `yaml:"difficulty"`
 		Info       string `yaml:"info"`
+		Version    string `yaml:"version"`
 	}
 }
