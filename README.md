@@ -35,6 +35,12 @@ make unpack && make -j
 
 Then you may see the new songs and illustrations in the database.
 
+## TODO
+
+- [ ] calculator for minimum accuracy to increase rks
+- [ ] frontend refine
+    - [ ] lazy loading images
+
 ## LICENSE
 
 GNU General Public License v3.0
