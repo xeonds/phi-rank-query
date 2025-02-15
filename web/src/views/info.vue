@@ -5,6 +5,7 @@
             <p>咕咕咕...正在加载</p>
         </div>
         <div v-else>
+            <p>PC端可以使用 <code>ctrl+f</code> 搜索曲名哦</p>
             <table class="table border-collapse table-auto w-full">
                 <thead>
                     <tr>
@@ -49,7 +50,3 @@ onMounted(async () => {
     isLoading.value = false;
 });
 </script>
-
-<style>
-/* Add any custom styles here */
-</style>

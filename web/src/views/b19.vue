@@ -24,31 +24,14 @@
     </div>
     <div class="b19">
       <div class="L">
-        <!-- phi -->
-        <SongItem :song="phi" v-if="phi.song" :index="'#phi'" />
-        <div v-else class="Nosignal">
-          <div class="border_corner border_corner_left_top"></div>
-          <div class="border_corner border_corner_right_top"></div>
-          <div class="border_corner border_corner_left_bottom"></div>
-          <div class="border_corner border_corner_right_bottom"></div>
-          <div class="line"></div>
-          <div class="timeout">
-            <p>TIME_OUT</p>
-          </div>
-          <div class="client">
-            <p>>>> PhigrOS Client Finding Phi.score</p>
-          </div>
-          <div class="sqrt"></div>
-        </div>
-
         <template v-for="(song, index) in b19_list" :key="song.num">
-          <SongItem :song="song" v-if="index % 2 === 1" :index="'#' + (index + 1)" />
+          <SongItem :song="song" v-if="index % 2 === 0" :index="'#' + (index + 1)" />
         </template>
 
       </div>
       <div class="R">
         <template v-for="(song, index) in b19_list" :key="song.num">
-          <SongItem :song="song" v-if="index % 2 === 0" :index="'#' + (index + 1)" />
+          <SongItem :song="song" v-if="index % 2 === 1" :index="'#' + (index + 1)" />
         </template>
       </div>
     </div>
@@ -66,17 +49,6 @@ const ChallengeMode = ref('');
 const ChallengeModeRank = ref('');
 const data = ref('');
 const lastDate = ref('');
-const phi = ref({
-  song: '',
-  illustration: '',
-  rank: '',
-  difficulty: '',
-  rks: '',
-  Rating: '',
-  score: '',
-  acc: '',
-  suggest: ''
-});
 const b19_list: Ref<Song[]> = ref([] as Song[]);
 const sessionToken = ref('');
 
@@ -91,7 +63,8 @@ const askForSessionToken = () => {
 }
 const fetchData = async (sessionToken: string) => {
   const cacheKey = 'history-' + sessionToken;
-  const cacheTimeout = 60000; // 1 minute in milliseconds
+  // const cacheTimeout = 60000; // 1 minute in milliseconds
+  const cacheTimeout = -1; // 1 minute in milliseconds
 
   const currentTime = Date.now();
   const cachedData = JSON.parse(localStorage.getItem(cacheKey) || 'null');
@@ -149,18 +122,17 @@ const parseData = (data: any) => {
   ChallengeMode.value = getHiBit(data.challenge).toFixed(0).toString() || '';
   ChallengeModeRank.value = getSubBit(data.challenge).toString() || '';
   lastDate.value = data.date || '';
+  lastDate.value = new Date(lastDate.value).toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).replace(/\//g, '-').replace(',', '');
   Rks.value = data.rks.toFixed(4).toString();
-  phi.value.song = data.phi.Song || '';
-  phi.value.illustration = data.phi.Illustration || '';
-  phi.value.rank = data.phi.Level || '';
-  phi.value.difficulty = data.phi.Difficulty || '';
-  phi.value.rks = data.phi.Rks.toString() || '';
-  phi.value.Rating = data.phi.Score >= 1000000 ? 'phi' : '';
-  phi.value.score = data.phi.Score.toString() || '';
-  phi.value.acc = data.phi.Acc.toString() || '';
-  phi.value.suggest = '';
-
-  b19_list.value = data.b19.map((item: any) => ({
+  b19_list.value = [...data.phi, ...data.b27].map((item: any) => ({
     num: 0,
     song: item.Song || '',
     illustration: item.Illustration || '',

@@ -15,7 +15,9 @@
                 </li>
                 <li class="bg-gray-900 bg-opacity-60 p-4 rounded shadow">
                     <h3 class="text-lg font-bold text-gray-400">全成绩查询</h3>
-                    <p>一次性查询你的所有历史成绩！和B19共享cd哦</p>
+                    <p>一次性查询你的所有历史成绩！
+                        <!-- 和B19共享cd哦 -->
+                    </p>
                 </li>
                 <li class="bg-gray-900 bg-opacity-60 p-4 rounded shadow">
                     <h3 class="text-lg font-bold text-gray-400">谱面定数查询</h3>
@@ -27,9 +29,9 @@
                 </li>
             </ul>
             <br>
-            <p class="text-gray-300"> 用法：先在Session页面添加存档，然后点击存档左侧来选择要查询的存档，最后切换到B19页面等待一会即可查询到结果 </p>
+            <p class="text-gray-300"> 用法：先在Session页面添加存档，然后点击存档左侧来选择要查询的存档，最后切换到B27或者BN页面等待一会即可查询到结果 </p>
             <br>
-            <p class="text-gray-300"> 为减轻鸽游服务器压力，站点内置1分钟查询cd，期间显示结果为最近一次查询结果 </p>
+            <!-- <p class="text-gray-300"> 为减轻鸽游服务器压力，站点内置1分钟查询cd，期间显示结果为最近一次查询结果 </p> -->
             <br>
             <p class="text-gray-300"> ps: 有任何意见和建议欢迎通过<code>xeonds@stu.xidian.edu.cn</code>给我发邮件哦</p>
             <br>
@@ -39,7 +41,7 @@
         </main>
         <footer class="py-4">
             <div class="container mx-auto px-4">
-                <p class="text-center text-gray-400"> 2024 &copy; Phi Rank Query</p>
+                <p class="text-center text-gray-400"> Last Update: {{ time }} | Phi Rank Query</p>
             </div>
         </footer>
     </div>
@@ -48,10 +50,12 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 
-let version = ref('114514');
-onMounted(()=>{
-    fetch('/api/v1/version').then(res=>res.json()).then(data=>{
-        version = data.version;
-    })
+let version = ref('11.4.514');
+let time = ref("1919-8-10")
+onMounted(async ()=>{
+    const data = await fetch('/config.json')
+    const json = await data.json()
+    version.value = json.version
+    time.value = json.updateTime
 })
 </script>

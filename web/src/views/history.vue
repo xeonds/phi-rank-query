@@ -14,6 +14,7 @@
     </div>
     <div v-if="isSelectHistory">
         <h3>查询历史记录，共{{ historyScores.length }}条</h3>
+        <p>注意：3.11.0更新了历史格式，因此旧版本记录格式将无法查看</p>
         <table class="table w-full border-collapse text-gray-400">
             <thead>
                 <tr>
@@ -43,8 +44,8 @@
         <p>Player: {{ selectedScore.player }}</p>
         <p>RankingScore: {{ selectedScore.rks.toFixed(4) }}</p>
         <div class="flex flex-row flex-wrap">
-            <SongItem :index="'#phi'" :song="parseSong(selectedScore.phi)" class="mx-4"/>
-            <SongItem v-for="(song, index) in parseSongList(selectedScore.b19)" :key="index"
+
+            <SongItem v-for="(song, index) in parseSongList([...selectedScore.phi, ...(selectedScore.b19 || selectedScore.b27)])" :key="index"
                 :index="'#' + (index + 1).toString()" :song="song" class="mx-4"/>
         </div>
     </div>
@@ -53,7 +54,7 @@
 <script lang="ts" setup>
 import { Ref, onMounted, ref } from 'vue';
 import SongItem from '@/components/song.vue';
-import { parseSongList, parseSong } from '@/common.ts';
+import { parseSongList } from '@/common.ts';
 
 const historyScores: Ref<any[]> = ref([])
 const sessionToken = ref<string>('');
