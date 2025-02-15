@@ -20,18 +20,15 @@ func main() {
 	router := gin.Default()
 	router.Use(lib.LoggerMiddleware(config.Server.LogFile))
 	api := router.Group("/api/v1")
-	api.POST("/b19", GetB19(config, db))
+	api.POST("/b19", GetB27(config, db))
 	api.POST("/bn", GetBN(config, db))
 	api.GET("/leaderboard", GetLeaderboard(db))
 	api.GET("/rank_table", GetRankTable(config))
-	api.GET(("/version"), func(c *gin.Context) {
-		c.JSON(200, gin.H{"version": config.Data.Version})
-	})
 	lib.AddStatic(router, []string{"./dist"})
 	router.Run(config.Server.Port)
 }
 
-func GetB19(config *config.Config, db *gorm.DB) func(c *gin.Context) {
+func GetB27(config *config.Config, db *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		post := new(struct {
 			Session string `json:"session"`
@@ -72,7 +69,7 @@ func GetB19(config *config.Config, db *gorm.DB) func(c *gin.Context) {
 		})
 		c.JSON(200, gin.H{
 			"player":    accountInfo.Nickname,
-			"b19":       bn[:19],
+			"b27":       bn[:27],
 			"rks":       rks,
 			"phi":       phi,
 			"date":      userInfo.Results[0].Gamefile.Updatedat,
@@ -127,7 +124,7 @@ func GetBN(config *config.Config, db *gorm.DB) func(c *gin.Context) {
 		})
 		c.JSON(200, gin.H{
 			"player":    accountInfo.Nickname,
-			"b19":       bn,
+			"b27":       bn,
 			"rks":       rks,
 			"phi":       phi,
 			"date":      userInfo.Results[0].Gamefile.Updatedat,

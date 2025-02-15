@@ -1,13 +1,14 @@
 package lib
 
 import (
+	"bufio"
 	"context"
-	"encoding/csv"
 	"errors"
 	"log"
 	"math/rand"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -153,7 +154,7 @@ func CheckPasswordHash(password, hash string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 }
 
-// LoadCSV loads data from a CSV file and returns a slice of maps representing the rows.
+// LoadCSV loads data from a TSV file and returns a slice of maps representing the rows.
 func LoadCSV(filePath string) (map[string]map[string]string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -162,9 +163,13 @@ func LoadCSV(filePath string) (map[string]map[string]string, error) {
 	}
 	defer file.Close()
 
-	reader := csv.NewReader(file)
-	rows, err := reader.ReadAll()
-	if err != nil {
+	var rows [][]string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		rows = append(rows, strings.Split(line, "\t"))
+	}
+	if err := scanner.Err(); err != nil {
 		log.Println("Failed to read file: ", err)
 		return nil, err
 	}
@@ -173,7 +178,7 @@ func LoadCSV(filePath string) (map[string]map[string]string, error) {
 	data := make(map[string]map[string]string, len(rows)-1)
 	for i := 1; i < len(rows); i++ {
 		values := make(map[string]string)
-		for j := 1; j < len(rows[0]); j++ {
+		for j := 1; j < len(rows[i]); j++ {
 			values[headers[j]] = rows[i][j]
 		}
 		// use first column as key

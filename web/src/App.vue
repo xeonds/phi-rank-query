@@ -11,7 +11,7 @@
                 <div class="space-x-4">
                     <a href="/#/" class="link link-hover text-gray-300">主页</a>
                     <a href="/#/info" class="link link-hover text-gray-300">定数查询</a>
-                    <a href="/#/b19" class="link link-hover text-gray-300">B19查询</a>
+                    <a href="/#/b19" class="link link-hover text-gray-300">B27查询</a>
                     <a href="/#/bn" class="link link-hover text-gray-300">所有成绩查询</a>
                     <a href="/#/calc" class="link link-hover text-gray-300">Rks手动计算</a>
                     <a href="/#/history" class="link link-hover text-gray-300">查询历史</a>

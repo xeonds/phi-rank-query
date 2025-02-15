@@ -180,8 +180,7 @@ func DecryptSaveZip(savezip *zip.Reader) *model.Game {
 }
 
 // 计算BN信息
-func CalcBNInfo(data *model.Game, config *config.Config) ([]model.Record, float64, model.Record) {
-	phi := model.Record{}
+func CalcBNInfo(data *model.Game, config *config.Config) ([]model.Record, float64, []model.Record) {
 	difficulty, err := lib.LoadCSV(config.Data.Difficulty)
 	if err != nil {
 		log.Fatal("reading difficulty: ", err)
@@ -191,53 +190,51 @@ func CalcBNInfo(data *model.Game, config *config.Config) ([]model.Record, float6
 		log.Fatal("reading songInfo: ", err)
 	}
 	comRks := 0.0
-	phi.Rks = 0.0
 	var rksList []model.Record
 	for title, song := range data.GameRecord.Record {
+		// fix: difficulty数组访问下标错误导致定数数据获取失败的问题
+		// 原因：疑似difficulty.csv下标变换导致map访问异常
 		titleTrim := title[:len(title)-2]
 		for level, tem := range song {
-			difficulty_map := []string{"EZ", "HD", "IN", "AT", "LEGACY"}
+			difficulty_map := []string{"EZ", "HD", "IN", "AT", "Legacy"}
 			if level == 4 {
 				break
 			}
 			if tem == nil {
 				continue
 			}
-			// fix: difficulty数组访问下标错误导致定数数据获取失败的问题
-			// 原因：疑似difficulty.csv下标变换导致map访问异常
-			diff, _ := strconv.ParseFloat(difficulty[title][difficulty_map[level]], 64)
+			diff, err := strconv.ParseFloat(difficulty[titleTrim][difficulty_map[level]], 64)
+			if err != nil {
+				log.Println("parsing difficulty: ", err)
+			}
 			songRank := model.Record{
-				Id:           title,
+				Id:           titleTrim,
 				Rks:          CalcSongRank(tem.Acc, diff),
 				Score:        tem.Score,
-				Difficulty:   difficulty[title][difficulty_map[level]],
+				Difficulty:   difficulty[titleTrim][difficulty_map[level]],
 				Level:        difficulty_map[level],
 				Acc:          float64(tem.Acc),
 				FullCombo:    tem.Fc,
-				Song:         songInfo[title]["song"],
+				Song:         songInfo[titleTrim]["song"],
 				Illustration: getIllustration(titleTrim),
-			}
-			if tem.Acc >= 100 {
-				if songRank.Rks > phi.Rks {
-					phi.Id = titleTrim
-					phi.Rks = songRank.Rks
-					phi.Acc = songRank.Acc
-					phi.Score = songRank.Score
-					phi.Song = songRank.Song
-					phi.Illustration = songRank.Illustration
-					phi.Difficulty = songRank.Difficulty
-					phi.FullCombo = songRank.FullCombo
-					phi.Level = songRank.Level
-				}
 			}
 			rksList = append(rksList, songRank)
 		}
 	}
 
-	if phi.Rks != 0 {
-		comRks += phi.Rks
-		phi.Rks = math.Floor(phi.Rks*100) / 100
-		phi.Acc = math.Floor(phi.Acc*100) / 100
+	sort.Slice(rksList, func(i, j int) bool {
+		return rksList[i].Rks > rksList[j].Rks
+	})
+
+	var p3 []model.Record
+	for _, record := range rksList {
+		if record.Acc == 100 {
+			p3 = append(p3, record)
+			comRks += record.Rks
+			if len(p3) == 3 {
+				break
+			}
+		}
 	}
 
 	var userRks float64
@@ -247,19 +244,15 @@ func CalcBNInfo(data *model.Game, config *config.Config) ([]model.Record, float6
 		minUpRks += 0.01
 	}
 
-	sort.Slice(rksList, func(i, j int) bool {
-		return rksList[i].Rks > rksList[j].Rks
-	})
-
 	for i := 0; i < len(rksList); i++ {
-		if i < 19 {
+		if i < 27 {
 			comRks += rksList[i].Rks
 		}
 		rksList[i].Rks = math.Floor(rksList[i].Rks*100) / 100
 		rksList[i].Acc = math.Floor(rksList[i].Acc*100) / 100
 	}
 
-	return rksList, comRks / float64(20), phi
+	return rksList, comRks / float64(30), p3
 }
 
 // 计算歌曲Rks
