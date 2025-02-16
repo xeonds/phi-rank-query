@@ -39,7 +39,9 @@ Then you may see the new songs and illustrations in the database.
 
 - [ ] calculator for minimum accuracy to increase rks
 - [ ] frontend refine
-    - [ ] lazy loading images
+    - [x] lazy loading images
+    - [x] state identifier
+    - [ ] better UI
 
 ## LICENSE
 

@@ -65,6 +65,7 @@ func GetB27(config *config.Config, db *gorm.DB) func(c *gin.Context) {
 		service.UpdateRank(db, &model.User{
 			SessionToken: post.Session,
 			Username:     accountInfo.Nickname,
+			BestN:        append(phi, bn...),
 			Rks:          rks,
 		})
 		c.JSON(200, gin.H{
@@ -120,6 +121,7 @@ func GetBN(config *config.Config, db *gorm.DB) func(c *gin.Context) {
 		db.Where("session_token = ?", post.Session).FirstOrCreate(&model.User{
 			SessionToken: post.Session,
 			Username:     accountInfo.Nickname,
+			BestN:        append(phi, bn...),
 			Rks:          rks,
 		})
 		c.JSON(200, gin.H{

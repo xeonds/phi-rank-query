@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p v-if="is_pending">咕咕咕...查询中，请勿离开页面哦</p>
     <div class="title">
       <div class="l">
         <img src="/assets/Phigros_Icon_3.0.0.png" alt="icon">
@@ -146,16 +147,21 @@ const parseData = (data: any) => {
   }));
 }
 
+const is_pending = ref(true);
+
 onMounted(async () => {
   if (askForSessionToken()) {
     const { data, err } = await fetchData(sessionToken.value)
     if (err.value != null) {
       alert('查询失败，请重试');
+      is_pending.value=false;
       window.location.href = '/#/';
     }
     parseData(data.value);
+    is_pending.value=false;
   } else {
     alert('请选择Session');
+    is_pending.value=false;
     window.location.href = '/#/session';
   }
 });
