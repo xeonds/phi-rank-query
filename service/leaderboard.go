@@ -18,6 +18,7 @@ func UpdateRank(db *gorm.DB, user *model.User) error {
 	}
 	u.Rks = user.Rks
 	u.Username = user.Username
+	u.BestN = user.BestN
 
 	if err := db.Save(u).Error; err != nil {
 		return err

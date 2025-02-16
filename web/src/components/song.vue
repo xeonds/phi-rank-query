@@ -30,7 +30,7 @@ const data = props.song ?? {
                 <p name="pvis">{{ index }}</p>
             </div>
             <div class="ill">
-                <img :src="data.illustration" alt="ill">
+                <img v-lazy="data.illustration" alt="ill">
             </div>
             <div :class="`rank-${data.rank}`">
                 <div class="org">
