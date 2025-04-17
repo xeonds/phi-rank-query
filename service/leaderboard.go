@@ -7,7 +7,7 @@ import (
 
 func GetLeaderboard(db *gorm.DB) *[]model.User {
 	users := new([]model.User)
-	db.Order("rks desc").Find(users).Select("id, username, rks")
+	db.Order("rks desc").Select("id", "username", "rks").Find(users)
 	return users
 }
 
