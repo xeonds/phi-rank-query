@@ -13,3 +13,14 @@ services:
     restart: always
     stdin_open: true
     tty: true
+    labels:
+      - nex.service=phi-rank-query
+      - nex.domain=phi
+      - nex.port=8542
+      - nex.name=Phi Rank
+      - nex.category=Tool
+
+networks:
+  default:
+    external: true
+    name: services

@@ -1,10 +1,21 @@
 package model
 
-import (
-	"time"
+import "github.com/xeonds/phi-plug-go/lib"
 
-	"github.com/xeonds/phi-plug-go/lib"
-)
+// Record is one chart result.
+type Record struct {
+	ID           string  `json:"id"`
+	Song         string  `json:"song"`
+	Level        string  `json:"level"`
+	Difficulty   string  `json:"difficulty"`
+	Rks          float64 `json:"rks"`
+	Score        uint32  `json:"score"`
+	Acc          float64 `json:"acc"`
+	FullCombo    bool    `json:"fullCombo"`
+	Illustration string  `json:"illustration"`
+}
+
+// --- LeanCloud save payloads ---
 
 type GameSave struct {
 	Results []struct {
@@ -41,91 +52,12 @@ type GameSave struct {
 		} `json:"user"`
 	} `json:"results"`
 }
+
 type GameAccount struct {
-	ACL struct {
-		NAMING_FAILED struct {
-			Write bool `json:"write"`
-			Read  bool `json:"read"`
-		} `json:"*"`
-	} `json:"ACL"`
-	AuthData struct {
-		Taptap struct {
-			AccessToken  string `json:"access_token"`
-			Avatar       string `json:"avatar"`
-			Kid          string `json:"kid"`
-			MacAlgorithm string `json:"mac_algorithm"`
-			MacKey       string `json:"mac_key"`
-			Name         string `json:"name"`
-			Openid       string `json:"openid"`
-			TokenType    string `json:"token_type"`
-			Unionid      string `json:"unionid"`
-		} `json:"taptap"`
-	} `json:"authData"`
-	Avatar              string    `json:"avatar"`
-	CreatedAt           time.Time `json:"createdAt"`
-	EmailVerified       bool      `json:"emailVerified"`
-	MobilePhoneVerified bool      `json:"mobilePhoneVerified"`
-	Nickname            string    `json:"nickname"`
-	ObjectID            string    `json:"objectId"`
-	SessionToken        string    `json:"sessionToken"`
-	ShortID             string    `json:"shortId"`
-	UpdatedAt           time.Time `json:"updatedAt"`
-	Username            string    `json:"username"`
-}
-type GameProcess struct {
-	IsFirstRun                 bool
-	LegacyChapterFinished      bool
-	AlreadyShowCollectionTip   bool
-	AlreadyShowAutoUnlockINTip bool
-	Completed                  string
-	SongUpdateInfo             int
-	ChallengeModeRank          int16
-	Money                      [5]int
-	UnlockFlagOfSpasmodic      byte
-	UnlockFlagOfIgallta        byte
-	UnlockFlagOfRrharil        byte
-	FlagOfSongRecordKey        byte
-	RandomVersionUnlocked      byte
-	Chapter8UnlockBegin        bool
-	Chapter8UnlockSecondPhase  bool
-	Chapter8Passed             bool
-	Chapter8SongUnlocked       byte
-}
-type LevelRecord struct {
-	Score uint32
-	Acc   float32
-	Fc    bool
-}
-type GameUser struct {
-	Name         string
-	Version      int
-	ShowPlayerId bool
-	SelfIntro    string
-	Avatar       string
-	Background   string
-}
-type GameSettings struct {
-	ChordSupport      bool
-	FcAPIndicator     bool
-	EnableHitSound    bool
-	LowResolutionMode bool
-	DeviceName        string
-	Bright            float32
-	MusicVolume       float32
-	EffectVolume      float32
-	HitSoundVolume    float32
-	SoundOffset       float32
-	NoteScale         float32
-}
-type GameRecord struct {
-	Name     string
-	Version  int
-	Data     *lib.ByteReader
-	Record   map[string][]*LevelRecord
-	Songsnum int
+	Nickname string `json:"nickname"`
+	Avatar   string `json:"avatar"`
 }
 
-// 存档信息
 type Game struct {
 	GameProgress *GameProcess
 	GameUser     *GameUser
@@ -133,17 +65,31 @@ type Game struct {
 	GameRecord   *GameRecord
 }
 
-// 单曲Rks信息
-type Record struct {
-	UserID uint32
+type GameProcess struct {
+	Completed         string
+	ChallengeModeRank int16
+}
 
-	Id           string
-	Rks          float64
-	Score        uint32
-	Difficulty   string
-	Level        string
-	Acc          float64
-	FullCombo    bool
-	Song         string
-	Illustration string
+type GameUser struct {
+	Name         string
+	SelfIntro    string
+	Avatar       string
+	Background   string
+	ShowPlayerID bool
+}
+
+type GameSettings struct {
+	DeviceName string
+}
+
+type GameRecord struct {
+	Songsnum int
+	Data     *lib.ByteReader
+	Record   map[string][]*LevelRecord
+}
+
+type LevelRecord struct {
+	Score uint32
+	Acc   float32
+	Fc    bool
 }

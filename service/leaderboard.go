@@ -5,23 +5,20 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetLeaderboard(db *gorm.DB) *[]model.User {
-	users := new([]model.User)
-	db.Order("rks desc").Select("id", "username", "rks").Find(users)
+// Leaderboard returns users ordered by rks descending.
+func Leaderboard(db *gorm.DB) []model.User {
+	var users []model.User
+	db.Order("rks desc").Select("id", "username", "rks").Find(&users)
 	return users
 }
 
-func UpdateRank(db *gorm.DB, user *model.User) error {
-	u := new(model.User)
-	if err := db.FirstOrCreate(u, model.User{SessionToken: user.SessionToken}).Error; err != nil {
-		return err
+// UpdateUser inserts or updates a user's rks after a query.
+func UpdateUser(db *gorm.DB, session, username string, rks float64) {
+	var u model.User
+	if err := db.Where("session_token = ?", session).FirstOrCreate(&u, model.User{SessionToken: session}).Error; err != nil {
+		return
 	}
-	u.Rks = user.Rks
-	u.Username = user.Username
-	u.BestN = user.BestN
-
-	if err := db.Save(u).Error; err != nil {
-		return err
-	}
-	return nil
+	u.Username = username
+	u.Rks = rks
+	db.Save(&u)
 }

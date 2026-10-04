@@ -1,9 +1,9 @@
 package model
 
+// User is a player stored for the leaderboard.
 type User struct {
-	ID           uint32   `gorm:"primary_key" json:"id"`
-	SessionToken string   `gorm:"unique" json:"session_token"`
-	Username     string   `json:"username"`
-	BestN        []Record `gorm:"serializer:json" json:"best_n"`
-	Rks          float64  `json:"rks"`
+	ID           uint32  `gorm:"primary_key" json:"id"`
+	SessionToken string  `gorm:"unique" json:"-"`
+	Username     string  `json:"username"`
+	Rks          float64 `json:"rks"`
 }

@@ -11,13 +11,15 @@ When developing this tool, I referenced the code from these two contributors and
 
 ### Build
 
-Make sure you have Golang and npm environment installed on your system, and place the latest version of Phigros installation (should be renamed to `Phigros.apk`) package in `./build` directory (create `./build` manually if necessary). Then execute the following commands:
+Make sure you have Golang and npm environment installed on your system, and place the latest version of Phigros installation (should be named `base.apk`) package in `./build` directory (create `./build` manually if necessary). Then execute the following commands:
 
 ```bash
 make init && make unpack && make -j && make run
 ```
 
-Then the program will exit, and you need to fill in the configuration information. The configuration file is located at `./build/config.yaml`, and make sure to modify the paths of two files in the Data section to `./dist/xxx.csv`.
+> Or let the tool download the latest APK from TapTap automatically: `make fetch` (saves to `./build/base.apk`), then `make unpack`.
+
+Then the program will exit, and you need to fill in the configuration information. The configuration file is located at `./build/config.yaml`, and make sure to modify the paths of two files in the Data section to `./dist/xxx.tsv`.
 
 ### Run
 
@@ -27,7 +29,7 @@ Finally, execute `make run` again. Then you can access the service through `http
 
 ### Upgrade the database
 
-When new songs are added to the game, place the latest version of Phigros installation (should be renamed to `Phigros.apk`) package in `./build` directory, and execute the following commands:
+When new songs are added to the game, fetch or place the latest version of Phigros installation package (should be named `base.apk`) in `./build` directory, and execute the following commands:
 
 ```bash
 make unpack && make -j

@@ -2,7 +2,7 @@ NAME=phi-rank-query
 BINDIR=build
 VERSION=1.0.0
 BUILDTIME=$(shell date -u)
-APK_NAME="../build/base.apk"
+APK_NAME=build/base.apk
 GOBUILD=go mod tidy && go build -ldflags '-s -w -X "main.version=$(VERSION)" -X "main.buildTime=$(BUILDTIME)"'
 FRONTBUILD=cd web && pnpm i && pnpm run build --outDir=../$(BINDIR)/dist --emptyOutDir
 
@@ -27,8 +27,10 @@ init:
 	(cd web && pnpm i)
 
 unpack:
-	(cd web/public/assets && rm -rf ./illustrations) &&\
-	(cd script && ./unpack.sh $(APK_NAME))
+	go run ./cmd/unpack run $(APK_NAME) web/public
+
+fetch:
+	go run ./cmd/unpack fetch $(APK_NAME)
 
 deploy:
 	docker-compose up -d
