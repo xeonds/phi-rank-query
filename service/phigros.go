@@ -109,6 +109,10 @@ func (c *Client) Query(session string) (*PlayerResult, error) {
 	if len(save.Results) == 0 {
 		return nil, fmt.Errorf("no save found")
 	}
+	// LeanCloud returns saves oldest-first; pick the most recently modified.
+	sort.Slice(save.Results, func(i, j int) bool {
+		return save.Results[i].Modifiedat.Iso > save.Results[j].Modifiedat.Iso
+	})
 	latest := save.Results[0]
 
 	saveZip, err := c.downloadZip(latest.Gamefile.URL)
@@ -255,6 +259,10 @@ func decrypt(ciphertext []byte) []byte {
 	block, _ := aes.NewCipher(key)
 	plain := make([]byte, len(ciphertext))
 	cipher.NewCBCDecrypter(block, iv).CryptBlocks(plain, ciphertext)
+	// Strip PKCS#7 padding so parsers can rely on an exact byte length.
+	if n := int(plain[len(plain)-1]); n > 0 && n <= aes.BlockSize && n <= len(plain) {
+		plain = plain[:len(plain)-n]
+	}
 	return plain
 }
 
@@ -281,7 +289,7 @@ func parseGameProgress(data []byte) *model.GameProcess {
 func parseGameRecord(data []byte) *model.GameRecord {
 	gr := &model.GameRecord{Data: lib.NewByteReader(data), Record: map[string][]*model.LevelRecord{}}
 	gr.Songsnum = int(gr.Data.GetVarInt())
-	for gr.Data.Remaining() > 32 {
+	for gr.Data.Remaining() > 0 {
 		key := gr.Data.GetString()
 		gr.Data.SkipVarInt(0)
 		length := gr.Data.GetByte()
